@@ -28,7 +28,10 @@ else:
 
 x = []
 for line in f.readlines():
-  x.append( float(line) )
+  line = line.replace(',',' ')
+  values = line.split()
+  for v in values:
+      x.append( float(v) )
 
 p = []
 M = sum(x)
