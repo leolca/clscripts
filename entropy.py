@@ -53,10 +53,9 @@ elif args.method == 'jk' or args.method == 'jackknife':
   n = filter(lambda a: a != 0, n)
   N = len(n)
   p = [nn/M for nn in n]
-  #H = M*sum( [ -pp*math.log(pp,base) for pp in p ] )
   H = M*entropy(p, base)
   for i in range(0,N):
-     nt = n
+     nt = list(n) # create a copy
      nt[i] -= 1
      Mt = sum(nt)
      p = [nn/Mt for nn in nt]
