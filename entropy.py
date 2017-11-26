@@ -60,5 +60,10 @@ elif args.method == 'jk' or args.method == 'jackknife':
      Mt = sum(nt)
      p = [nn/Mt for nn in nt]
      H -= ((M-1)/M) * n[i] * entropy(p,base)
-   
+elif args.method == 'mm' or args.method == 'millermadow':
+  n = filter(lambda a: a != 0, n)
+  N = len(n)
+  p = [nn/M for nn in n]
+  H = entropy(p, base) + (N-1)/(2*M)
+
 print H
