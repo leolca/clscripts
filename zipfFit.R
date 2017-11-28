@@ -29,7 +29,7 @@ df = data.model$go[1,2]
 X2 = data.model$go[1,1]
 if ( args$gof ) {
   cat("a\tb\tC\tX2\tdf\tp\n")
-  cat(sprintf("%.3f",s)); cat("\t"); cat(sprintf("%.3f",b)); cat("\t"); cat(sprintf("%.3f",C)); cat("\t"); cat(sprintf("%.2f",X2)); cat("\t"); cat(sprintf("%.2f",df)); cat("\t"); cat(sprintf("%.3f",p));  
+  cat(sprintf("%.3f",s)); cat("\t"); cat(sprintf("%.3f",b)); cat("\t"); cat(sprintf("%.3f",C)); cat("\t"); cat(sprintf("%.2f",X2)); cat("\t"); cat(sprintf("%.2f",df)); cat("\t"); cat(sprintf("%0.3g",p));  
 } else {
   cat("a\tb\tC\n")
   cat(sprintf("%.3f",s)); cat("\t"); cat(sprintf("%.3f",b)); cat("\t"); cat(sprintf("%.3f",C));
