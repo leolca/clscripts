@@ -35,17 +35,22 @@ if [ -z "$COUNTSONLY" ]; then
    fi
 fi
 
+if [ "$COUNTSONLY" ]; then
+   SEDSTR="\1"
+else
+   SEDSTR="\1\t\2"
+fi
 
 if [ -z "$OUTPUTFILE" ]; then
   if [ "$INPUTFILE" ]; then 
      cat "$INPUTFILE"
   else 
      cat
-  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed 's/[[:space:]]*\([0-9]*\) \([a-z]*\)/\1\t\2/' 
+  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" 
 else
   if [ "$INPUTFILE" ]; then
      cat "$INPUTFILE"
   else
      cat
-  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed 's/[[:space:]]*\([0-9]*\) \([a-z]*\)/\1\t\2/' >> $OUTPUTFILE
+  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
 fi
