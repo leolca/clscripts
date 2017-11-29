@@ -50,6 +50,18 @@ It is possible to output only the count values as exemplified bellow:
 ```
 
 ## entropy.py <a name="pyentropy"></a>
+Compute an estimate for the Shannon entropy given a vector of counts in a input file or through the stdin. As default, the entropy is calculated in bits, but you might specify the desired base as well. The entropy might estimated using the following approaches: maximum likelihood estimate (using the plug-in formula, used as the default approach), jackknife resampling technique or Miller-Madow correction to the plug-in estimate. For each of them you must provide a string with the method name: 'mle' or 'plugin', jk' or 'jackknife' and 'mm' or 'millermadow', respectivelly.
+
+### usage examples
+A simple example to compute the word counts from the text Ulysses and use the maximum likelihood estimate to estimate the entropy in bits.
+
+```
+$ cat ulysses.txt | ./wordcounttfl.sh -c | ./entropy.py
+$ ./wordcounttfl.sh -c -i ulysses.txt | ./entropy.py
+$ ./wordcounttfl.sh -c -i ulysses.txt -o ulysses.cnt && ./entropy.py -i ulysses.cnt 
+$ ./wordcounttfl.sh -c -i ulysses.txt | ./entropy.py --method mm
+$ ./wordcounttfl.sh -c -i ulysses.txt -o ulysses.cnt && ./entropy.py -i ulysses.cnt --method mm
+```
 
 ## heapslaw.py <a name="heapslaw"></a>
 Extract vocabulary size from different lengths of a text file, suitable to check Heaps' (or Heardan's) law.
