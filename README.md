@@ -43,6 +43,12 @@ $./wordcounttfl.sh -i ulysses.txt -o ulysses.tfl
 $./wordcounttfl.sh --input-file ulysses.txt --output-file ulysses.tfl
 ```
 
+It is possible to output only the count values as exemplified bellow:
+```
+./wordcounttfl.sh -i ulysses.txt -c -o ulysses.cnt
+./wordcounttfl.sh ---input-file ulysses.txt --output-file ulysses.cnt --counts
+```
+
 ## entropy.py <a name="pyentropy"></a>
 
 ## heapslaw.py <a name="heapslaw"></a>
