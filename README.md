@@ -1,7 +1,13 @@
 # clscripts
 Repository for computational linguistics scripts (bash, python, octave, etc).
 
-## wordcounttfl.sh
+
+# Table of Contents
+1. [wordcounttfl.sh](#wordcounttfl)
+2. [entropy.py](#pyentropy)
+3. [heapslaw.py](#heapslaw)
+
+## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) complatible with zipfR frequency spectrum file.
 
 ### usage examples
@@ -37,5 +43,7 @@ $./wordcounttfl.sh -i ulysses.txt -o ulysses.tfl
 $./wordcounttfl.sh --input-file ulysses.txt --output-file ulysses.tfl
 ```
 
-## heapslaw.py
+## entropy.py <a name="pyentropy"></a>
+
+## heapslaw.py <a name="heapslaw"></a>
 Extract vocabulary size from different lengths of a text file, suitable to check Heaps' (or Heardan's) law.
