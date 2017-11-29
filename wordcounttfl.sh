@@ -27,6 +27,19 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+if [ ! -z "$OUTPUTFILE" ]; then
+  if [ -f "$OUTPUTFILE" ]; then
+     read -p "File exist! Are you sure [y,n]? " -n 1 -r
+     echo
+     if [[ $REPLY =~ ^[Yy]$ ]];
+     then
+       rm $OUTPUTFILE
+     else
+       exit
+     fi
+  fi
+fi 
+
 if [ -z "$COUNTSONLY" ]; then
    if [ -z "$OUTPUTFILE" ]; then
       echo -e "f\ttype" 
