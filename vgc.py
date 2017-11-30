@@ -13,7 +13,7 @@ def is_valid_file(parser, arg):
     else:
         return arg
 
-def valid_max_len(string):
+def valid_len(string):
     value = string.lower()
     if value in ('inf','all'):
        value = -1
@@ -23,17 +23,25 @@ def valid_max_len(string):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--maxlen", help="Maximum length of the sample that will be analyzed.", type=int)
-parser.add_argument("--samples", help="Number of points in the output (linearly spaced or logarithmically spaced). Use Inf or All to print every single sample.", type=valid_max_len, default=100)
+parser.add_argument("--samples", help="Number of points in the output (linearly spaced or logarithmically spaced). Use Inf or All to print every single sample.", type=valid_len, default=-1)
 parser.add_argument("--log", help="Use logarithmic spaced samples.", action='store_true')
-parser.add_argument("-i", dest="filename", required=True, help="Input text file name.", metavar="FILE", type=lambda x: is_valid_file(parser, x))
+parser.add_argument("-i", dest="filename", help="Input text file name.", metavar="FILE", type=lambda x: is_valid_file(parser, x))
 parser.add_argument("-V", dest="legomenon", help="Number of types in the corresponding frequency classes at the specified Ns (-V 1: hapax legomena, -V 2: hapax and dis legomenon, -V 3: hapax, dis and tris legomenon, etc).", type=int, default=1)
 args = parser.parse_args()
 
 if args.maxlen:
   maxlen = args.maxlen
-else:
+elif args.filename:
   # count number of words in the input file
   maxlen = sum(len(line.split()) for line in open(args.filename))
+else:
+  maxlen = float('Inf')
+
+if not args.filename and args.samples != -1:
+   raise ValueError('When file is not given, the maximum length is unknown and maxlen must be set to Infinite!')
+
+if not args.filename and args.log:
+   raise ValueError('When file is not given, it is not possible to use logarithmically spaced samples!')
 
 # list with indexes for the samples
 if args.samples > 0:
@@ -49,7 +57,6 @@ if args.samples > 0:
    else:
      lsamples = np.round(np.linspace(1, maxlen, num=args.samples))
 
-
 #print headers
 print 'N' + '\t' + 'V',
 for i in range(0,args.legomenon):
@@ -59,8 +66,13 @@ print ''
 words = {}	# dictionary with word as key and frequency as value
 Nf = {} 	# dictionary with frequency as key and number of types with that given frequency (freq. of freq.) as value
 count = 0
-file = open(args.filename)
-lines = file.readlines()
+
+if args.filename:
+  f = open(args.filename, "rt")
+else:
+  f = sys.stdin
+
+lines = f.readlines()
 for line in lines:
     s = line.split()
     for word in s: 
