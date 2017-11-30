@@ -65,3 +65,38 @@ $ ./wordcounttfl.sh -c -i ulysses.txt -o ulysses.cnt && ./entropy.py -i ulysses.
 
 ## heapslaw.py <a name="heapslaw"></a>
 Extract vocabulary size from different lengths of a text file, suitable to check Heaps' (or Heardan's) law.
+
+### parameters
+* **-i**: input file name
+* **--maxlen**: maximum length of the text that will be considered (default: full length)
+* **--samples**: number of samples that will be created (default: 100)
+* **--log**: if provided, the genenerated samples will be logarithmically spaced
+
+
+### usage examples
+Given only the input file name, it will compute 100 linear spaced samples of the vocabulary growth. The first colum represents the text length and the second the vocabulary size.
+```
+./heapslaw.py -i Ulysses.txt
+```
+
+```
+1       1
+2677    1203
+5354    2038
+8030    2908
+10707   3704
+13383   4526
+16059   5466
+18736   6260
+ ...     ...
+256936  45340
+259612  45420
+262289  45495
+264965  45599
+```
+
+We might also splicity specify other parameters:
+```
+./heapslaw.py -i Ulysses.txt --maxlen 264965 --samples 100
+```
+The example above will produce the same result, since the parameters given are the default values. 
