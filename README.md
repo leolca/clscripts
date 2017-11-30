@@ -6,6 +6,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 1. [wordcounttfl.sh](#wordcounttfl)
 2. [entropy.py](#pyentropy)
 3. [heapslaw.py](#heapslaw)
+4. [vgc.py](#vgc)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) complatible with zipfR frequency spectrum file.
@@ -125,3 +126,36 @@ Using **heapslaw.py** along with **gnuplot** to produce a vocabulary growth curv
 ./heapslaw.py -i ulysses.txt | gnuplot -e "set terminal png; set output 'ulysses.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set key right bottom; plot '/dev/stdin' with lines title 'ulysses'" 
 ```
 ![ulysses vocabulary growth curve](images/ulysses.png)
+
+
+## vgc.py <a name="vgc"></a>
+Create vocabulary growth curve data, compatible with zipfR package. Like **heaps.py**, lets provides the first column with text length, the second with vocabulary size and the subsequent columns display the number of types appearing from 1 to N times, where N is given by the **-V** parameter.
+
+### parameters
+* **-i**: input file name
+* **--maxlen**: maximum length of the text that will be considered (default: full length)
+* **--samples**: number of samples that will be created (default: 100)
+* **--log**: if provided, the genenerated samples will be logarithmically spaced
+* **-V**: number of frequencies we are interested in, **-V 1** will display also the *hapax legomena*, **-V 2** will display *hapax legomena* and *dis legomenon*, and so forth.
+
+### usage examples
+For the basic usage, you just need to provide the text file.
+```
+/vgc.py -i ulysses.txt
+```
+The result will be:
+```
+N       V       V1 
+1       1       1 
+2677    1203    892 
+5354    2038    1462 
+8030    2908    2096 
+10707   3704    2656 
+13383   4526    3250 
+16059   5466    3981 
+  ...    ...     ...
+259612  45420   29082 
+262289  45495   29117 
+264965  45599   29168 
+```
+
