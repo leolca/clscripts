@@ -26,7 +26,7 @@ parser.add_argument("--maxlen", help="Maximum length of the sample that will be 
 parser.add_argument("--samples", help="Number of points in the output (linearly spaced or logarithmically spaced). Use Inf or All to print every single sample.", type=valid_max_len, default=100)
 parser.add_argument("--log", help="Use logarithmic spaced samples.", action='store_true')
 parser.add_argument("-i", dest="filename", required=True, help="Input text file name.", metavar="FILE", type=lambda x: is_valid_file(parser, x))
-parser.add_argument("-V", dest="legomenon", help="Number of types in the corresponding frequency classes at the specified Ns (-V 1: hapax legomena, -V 2: hapax and dis legomenon, -V 3: hapax, dis and tris legomenon, etc).", type=int)
+parser.add_argument("-V", dest="legomenon", help="Number of types in the corresponding frequency classes at the specified Ns (-V 1: hapax legomena, -V 2: hapax and dis legomenon, -V 3: hapax, dis and tris legomenon, etc).", type=int, default=1)
 args = parser.parse_args()
 
 if args.maxlen:
