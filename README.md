@@ -49,6 +49,25 @@ It is possible to output only the count values as exemplified bellow:
 ./wordcounttfl.sh ---input-file ulysses.txt --output-file ulysses.cnt --counts
 ```
 
+Using the frequency spectrum file with zipfR:
+```
+> library(zipfR)
+> ulysses = read.tfl('ulysses.tfl')
+> summary(ulysses)
+zipfR object for frequency spectrum
+Sample size:     N  = 264625 
+Vocabulary size: V  = 29743 
+Range of freq's: f  = 1 ... 14952 
+Mean / median:   mu = 8.897051 ,  M = 1 
+Hapaxes etc.:    V1 = 16199 ,  V2 = 4788 
+Types:    a aaron aback abaft abandon ...
+> png('ulysses_f.png')
+> plot(ulysses, log="xy")
+> dev.off()
+```
+![ulysses frequency spectrum](images/ulysses_f.png)
+
+
 ## entropy.py <a name="pyentropy"></a>
 Compute an estimate for the Shannon entropy given a vector of counts in a input file or through the stdin. As default, the entropy is calculated in bits, but you might specify the desired base as well. The entropy might estimated using the following approaches: maximum likelihood estimate (using the plug-in formula, used as the default approach), jackknife resampling technique or Miller-Madow correction to the plug-in estimate. For each of them you must provide a string with the method name: 'mle' or 'plugin', jk' or 'jackknife' and 'mm' or 'millermadow', respectivelly.
 
