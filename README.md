@@ -100,3 +100,9 @@ We might also splicity specify other parameters:
 ./heapslaw.py -i Ulysses.txt --maxlen 264965 --samples 100
 ```
 The example above will produce the same result, since the parameters given are the default values. 
+
+Using **heapslaw.py** along with **gnuplot** to produce a vocabulary growth curve:
+```
+./heapslaw.py -i ulysses.txt | gnuplot -e "set terminal png; set output 'ulysses.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set key right bottom; plot '/dev/stdin' with lines title 'ulysses'" 
+```
+![ulysses vocabulary growth curve](images/ulysses.png)
