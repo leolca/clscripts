@@ -179,3 +179,20 @@ N   V   V1  V2  V3
 10  9   8   1   0 
 ```
 
+```
+$ ./vgc.py -i ulysses.txt --samples 256 --log -V 3 > ulysses.vgc
+$ R
+> uvgc = read.vgc('ulysses.vgc')
+> png('ulysses_vgc.png')
+> plot(uvgc, add.m=1)
+> dev.off()
+```
+![ulysses vocabulary growth curve and hapax legomena growth](images/ulysses_vgc.png)
+
+Or it might be done directly on shell using **gnuplot**:
+```
+./vgc.py -i ulysses.txt --samples 256 --log -V 3 -c | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set terminal png; set output 'ulysses_vgc2.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set title 'Ulysses - vocabulary growth'; set key left top; plot '-' using 1:2 with lines title 'vocabulary', '-' using 1:3 with lines title 'hapax legomena', '-' using 1:4 with lines title 'dis legomenon'"
+```
+**awk** is used to add an *e* to the end and **tee** is used to replicte the *stdout* since **gnuplot** needs one data for each line.
+![ulysses vocabulary, hapax legomena and dis legomenon growth curves](images/ulysses_vgc2.png)
+
