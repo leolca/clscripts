@@ -159,3 +159,23 @@ N       V       V1
 264965  45599   29168 
 ```
 
+You can also read text from stdin.
+```
+cat ulysses.txt | ./vgc.py --maxlen 10 -V 3
+```
+
+The result is:t
+```
+N   V   V1 	V2 	V3 
+1   1   1   0   0 
+2   2   2   0   0 
+3   3   3   0   0 
+4   4   4   0   0 
+5   5   5   0   0 
+6   6   6   0   0 
+7   6   5   1   0 
+8   7   6   1   0 
+9   8   7   1   0 
+10  9   8   1   0 
+```
+
