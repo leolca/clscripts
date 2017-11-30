@@ -22,11 +22,12 @@ def valid_len(string):
     return value
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--maxlen", help="Maximum length of the sample that will be analyzed.", type=int)
-parser.add_argument("--samples", help="Number of points in the output (linearly spaced or logarithmically spaced). Use Inf or All to print every single sample.", type=valid_len, default=-1)
-parser.add_argument("--log", help="Use logarithmic spaced samples.", action='store_true')
-parser.add_argument("-i", dest="filename", help="Input text file name.", metavar="FILE", type=lambda x: is_valid_file(parser, x))
-parser.add_argument("-V", dest="legomenon", help="Number of types in the corresponding frequency classes at the specified Ns (-V 1: hapax legomena, -V 2: hapax and dis legomenon, -V 3: hapax, dis and tris legomenon, etc).", type=int, default=1)
+parser.add_argument("-m","--maxlen", help="Maximum length of the sample that will be analyzed.", type=int)
+parser.add_argument("-s","--samples", help="Number of points in the output (linearly spaced or logarithmically spaced). Use Inf or All to print every single sample.", type=valid_len, default=-1)
+parser.add_argument("-l","--log", help="Use logarithmic spaced samples.", action='store_true')
+parser.add_argument("-i", "--input", dest="filename", help="Input text file name.", metavar="FILE", type=lambda x: is_valid_file(parser, x))
+parser.add_argument("-V", "--legomenon", dest="legomenon", help="Number of types in the corresponding frequency classes at the specified Ns (-V 1: hapax legomena, -V 2: hapax and dis legomenon, -V 3: hapax, dis and tris legomenon, etc).", type=int, default=1)
+parser.add_argument("-c", "--counts", help="Print only counts (remove header)", action='store_false')
 args = parser.parse_args()
 
 if args.maxlen:
@@ -57,11 +58,11 @@ if args.samples > 0:
    else:
      lsamples = np.round(np.linspace(1, maxlen, num=args.samples))
 
-#print headers
-print 'N' + '\t' + 'V',
-for i in range(0,args.legomenon):
-   print '\t' + 'V' + str(i+1),
-print ''
+if args.counts: #print headers
+  print 'N' + '\t' + 'V',
+  for i in range(0,args.legomenon):
+     print '\t' + 'V' + str(i+1),
+  print ''
 
 words = {}	# dictionary with word as key and frequency as value
 Nf = {} 	# dictionary with frequency as key and number of types with that given frequency (freq. of freq.) as value
