@@ -166,7 +166,7 @@ cat ulysses.txt | ./vgc.py --maxlen 10 -V 3
 
 The result is:t
 ```
-N   V   V1 	V2 	V3 
+N   V   V1  V2  V3 
 1   1   1   0   0 
 2   2   2   0   0 
 3   3   3   0   0 
