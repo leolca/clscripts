@@ -9,10 +9,10 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 4. [vgc.py](#vgc)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
-Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) complatible with zipfR frequency spectrum file.
+Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
 
 ### usage examples
-The examples bellow will count the ocurrences of words in ulysses.txt and output the result to the standard output:
+The examples bellow will count the occurrences of words in ulysses.txt and output the result to the standard output:
 ```
 $./wordcounttfl.sh ulysses.txt 
 $./wordcounttfl.sh -i ulysses.txt
@@ -76,7 +76,7 @@ $ ls *.txt | parallel 'cat {} | ./wordcounttfl.sh > {.}.flt'
 
 
 ## entropy.py <a name="pyentropy"></a>
-Compute an estimate for the Shannon entropy given a vector of counts in a input file or through the stdin. As default, the entropy is calculated in bits, but you might specify the desired base as well. The entropy might estimated using the following approaches: maximum likelihood estimate (using the plug-in formula, used as the default approach), jackknife resampling technique or Miller-Madow correction to the plug-in estimate. For each of them you must provide a string with the method name: 'mle' or 'plugin', jk' or 'jackknife' and 'mm' or 'millermadow', respectivelly.
+Compute an estimate for the Shannon entropy given a vector of counts in a input file or through the stdin. As default, the entropy is calculated in bits, but you might specify the desired base as well. The entropy might estimated using the following approaches: maximum likelihood estimate (using the plug-in formula, used as the default approach), jackknife resampling technique or Miller-Madow correction to the plug-in estimate. For each of them you must provide a string with the method name: 'mle' or 'plugin', jk' or 'jackknife' and 'mm' or 'millermadow', respectively.
 
 ### usage examples
 A simple example to compute the word counts from the text Ulysses and use the maximum likelihood estimate to estimate the entropy in bits.
@@ -96,11 +96,11 @@ Extract vocabulary size from different lengths of a text file, suitable to check
 * **-i**: input file name
 * **--maxlen**: maximum length of the text that will be considered (default: full length)
 * **--samples**: number of samples that will be created (default: 100)
-* **--log**: if provided, the genenerated samples will be logarithmically spaced
+* **--log**: if provided, the generated samples will be logarithmically spaced
 
 
 ### usage examples
-Given only the input file name, it will compute 100 linear spaced samples of the vocabulary growth. The first colum represents the text length and the second the vocabulary size.
+Given only the input file name, it will compute 100 linear spaced samples of the vocabulary growth. The first column represents the text length and the second the vocabulary size.
 ```
 ./heapslaw.py -i Ulysses.txt
 ```
@@ -121,7 +121,7 @@ Given only the input file name, it will compute 100 linear spaced samples of the
 264965  45599
 ```
 
-We might also splicity specify other parameters:
+We might also explicitly specify other parameters:
 ```
 ./heapslaw.py -i Ulysses.txt --maxlen 264965 --samples 100
 ```
@@ -141,7 +141,7 @@ Create vocabulary growth curve data, compatible with zipfR package. Like **heaps
 * **-i**: input file name
 * **--maxlen**: maximum length of the text that will be considered (default: full length)
 * **--samples**: number of samples that will be created (default: 100)
-* **--log**: if provided, the genenerated samples will be logarithmically spaced
+* **--log**: if provided, the generated samples will be logarithmically spaced
 * **-V**: number of frequencies we are interested in, **-V 1** will display also the *hapax legomena*, **-V 2** will display *hapax legomena* and *dis legomenon*, and so forth.
 
 ### usage examples
@@ -199,6 +199,6 @@ Or it might be done directly on shell using **gnuplot**:
 ```
 ./vgc.py -i ulysses.txt --samples 256 --log -V 3 -c | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set terminal png; set output 'ulysses_vgc2.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set title 'Ulysses - vocabulary growth'; set key left top; plot '-' using 1:2 with lines title 'vocabulary', '-' using 1:3 with lines title 'hapax legomena', '-' using 1:4 with lines title 'dis legomenon'"
 ```
-**awk** is used to add an *e* to the end and **tee** is used to replicte the *stdout* since **gnuplot** needs one data for each line.
+**awk** is used to add an *e* to the end and **tee** is used to replicate the *stdout* since **gnuplot** needs one data for each line.
 ![ulysses vocabulary, hapax legomena and dis legomenon growth curves](images/ulysses_vgc2.png)
 
