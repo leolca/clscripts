@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# help
+display_help() {
+    echo "Usage: $0 [option...] " >&2
+    echo
+    echo "   -h, --help                 Display this help message"
+    echo "   -c, --counts               Show only counts"
+    echo "   -o, --output-file          Specify output file name"
+    echo "   -i, --input-file           Specify input file name"
+    echo
+    # echo some stuff here for the -a or --add-options 
+    exit 1
+}
+
+
 # As long as there is at least one more argument, keep looping
 while [[ $# -gt 0 ]]; do
     key="$1"
@@ -16,6 +31,11 @@ while [[ $# -gt 0 ]]; do
         -i|--input-file)
         shift # past the key and to the value
         INPUTFILE="$1"
+        ;;
+	# display help
+	-h | --help)
+        display_help  # Call your function
+        exit 0
         ;;
         *)
         # Do whatever you want with extra options
@@ -59,11 +79,11 @@ if [ -z "$OUTPUTFILE" ]; then
      cat "$INPUTFILE"
   else 
      cat
-  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" 
+  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
 else
   if [ "$INPUTFILE" ]; then
      cat "$INPUTFILE"
   else
      cat
-  fi | tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
+  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
 fi
