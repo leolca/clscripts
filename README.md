@@ -69,6 +69,12 @@ Types:    a aaron aback abaft abandon ...
 ![ulysses frequency spectrum](images/ulysses_f.png)
 
 
+You may also get the frequency counts for multiple files in parallel using GNU Parallel as shown below:
+```
+$ ls *.txt | parallel 'cat {} | ./wordcounttfl.sh > {.}.flt'
+```
+
+
 ## entropy.py <a name="pyentropy"></a>
 Compute an estimate for the Shannon entropy given a vector of counts in a input file or through the stdin. As default, the entropy is calculated in bits, but you might specify the desired base as well. The entropy might estimated using the following approaches: maximum likelihood estimate (using the plug-in formula, used as the default approach), jackknife resampling technique or Miller-Madow correction to the plug-in estimate. For each of them you must provide a string with the method name: 'mle' or 'plugin', jk' or 'jackknife' and 'mm' or 'millermadow', respectivelly.
 
