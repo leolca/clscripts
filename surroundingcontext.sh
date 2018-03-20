@@ -72,11 +72,11 @@ if [ -z "$OUTPUTFILE" ]; then
      cat "$INPUTFILE"
   else 
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | grep -oE "((\w+\s*){0,$NWORDS})\s*\b$WORD\b\s*((\w+\s*){0,$NWORDS})"
+  fi | awk '{gsub(/[^[:alpha:]^[:blank:]^[\x27]]/,""); print tolower($0)}' | tr -d '\r' | tr '\n' ' ' | tr -s ' ' | sed 's/\([.?!;]\) */\1\n/g' | grep -oE "((\w*[\’\']?\w*\s*){0,$NWORDS})\s*\b(\w*[\’\'])?$WORD(\w*[\’\'])?\b\s*((\w*[\’\']?\w*\s*){0,$NWORDS})"
 else
   if [ "$INPUTFILE" ]; then
      cat "$INPUTFILE"
   else
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | grep -oE "((\w+\s*){0,$NWORDS})\s*\b$WORD\b\s*((\w+\s*){0,$NWORDS})" >> $OUTPUTFILE
+  fi | awk '{gsub(/[^[:alpha:]^[:blank:]^[\x27]]/,""); print tolower($0)}' | tr -d '\r' | tr '\n' ' ' | tr -s ' ' | sed 's/\([.?!;]\) */\1\n/g' | grep -oE "((\w*[\’\']?\w*\s*){0,$NWORDS})\s*\b(\w*[\’\'])?$WORD(\w*[\’\'])?\b\s*((\w*[\’\']?\w*\s*){0,$NWORDS})" >> $OUTPUTFILE
 fi
