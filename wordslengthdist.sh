@@ -68,11 +68,11 @@ if [ -z "$OUTPUTFILE" ]; then
      cat "$INPUTFILE"
   else 
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | awk '{ print length }' | sort | uniq -c | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
+  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | awk '{ print length }' | sort | uniq -c | sort -n -k2 | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
 else
   if [ "$INPUTFILE" ]; then
      cat "$INPUTFILE"
   else
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | awk '{ print length }' | sort | uniq -c | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
+  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | awk '{ print length }' | sort | uniq -c | sort -n -k2 |sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
 fi
