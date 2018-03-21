@@ -8,6 +8,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 3. [heapslaw.py](#heapslaw)
 4. [vgc.py](#vgc)
 5. [wordslengthdist.sh](#wordslengthdist)
+6. [surroundingcontext.sh](#surroundingcontext)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -208,7 +209,7 @@ Or it might be done directly on shell using **gnuplot**:
 Estimate the distribution of word length from a text file (or from stdin) and output a list of frequency and word lengths.
 
 ### usage examples
-We estimate bellow the word length distribution in Alice's Adventures in Wonderland:
+We estimate bellow the word length distribution in *Alice's Adventures in Wonderland*:
 ```
 $./wordslengthdist.sh alice.txt 
 $./wordslengthdist.sh -i alice.txt
@@ -221,3 +222,26 @@ The result is plotted using **gnuplot**:
 cat alice.txt | ./wordslengthdist.sh | gnuplot -e "set terminal png; set output 'alice-wlen-freq.png'; set xlabel 'word length'; set ylabel 'frequency'; set title 'word length distribution'; set key right top; set style fill solid; set yrange [0:]; set boxwidth 1; plot '-' using 2:1 with boxes title 'vocabulary'"
 ```
 ![alice word length distribution](images/alice-wlen-freq.png)
+
+
+
+## surroundingcontext.sh <a name="surroundingcontext"></a>
+Show text surrounding context for a given word.
+
+### parameters
+* **-i** or **--input-file**: input file name
+* **-o** or **--output-file**: output file name
+* **-w** or **--word**: word whose context you want to retrieve
+* **-n** or **--number-of-words**: number of words preceding and following in context
+* **-h** or **--help**: show script help
+
+### usage examples
+We present bellow the context of the word **clock** in *Alice's Adventures in Wonderland*:
+```
+$./surroundingcontext.sh -i alice.txt -w clock -n 3
+doesn’t tell what o’clock it is
+liked with the clock
+it were nine o’clock in the morning
+round goes the clock in a twinkling
+it’s always six o’clock now
+```
