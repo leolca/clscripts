@@ -9,6 +9,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 4. [vgc.py](#vgc)
 5. [wordslengthdist.sh](#wordslengthdist)
 6. [surroundingcontext.sh](#surroundingcontext)
+7. [wordposition.sh](#wordposition)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -244,4 +245,30 @@ liked with the clock
 it were nine o’clock in the morning
 round goes the clock in a twinkling
 it’s always six o’clock now
+```
+
+## wordposition.sh <a name="wordposition"></a>
+Get word locations in a given text file. The default behaviour is to show the word count position. It is also possible (and faster) to show the byte (char) position.
+
+### parameters
+* **-i** or **--input-file**: input file name
+* **-o** or **--output-file**: output file name
+* **-w** or **--word**: the given word you whant to locate in a text file
+* **-b** or **--byte**: return word location measured in byte position
+
+### usage examples
+We present bellow the location of the word **clock** in *Alice's Adventures in Wonderland*:
+```
+$ ./wordposition.sh -i alice.txt -w clock 
+14053
+14334
+14342
+14363
+14608
+$ ./wordposition.sh -i alice.txt -w clock -b
+79663
+81407
+81453
+81569
+83127
 ```
