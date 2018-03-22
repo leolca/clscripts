@@ -10,6 +10,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 5. [wordslengthdist.sh](#wordslengthdist)
 6. [surroundingcontext.sh](#surroundingcontext)
 7. [wordposition.sh](#wordposition)
+8. [wordchart.sh](#wordchart)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -272,3 +273,18 @@ $ ./wordposition.sh -i alice.txt -w clock -b
 81569
 83127
 ```
+
+## wordchart.sh <a name="wordchart"></a>
+Create a word chart, presenting each occurrence of a word along a text as a vertical bar.
+
+### parameters
+* **-i** or **--input-file**: input file name
+* **-o** or **--output-file**: output file name for the png file (if not provided, just open a plot window and don't save)
+* **-w** or **--word**: the given word you whant to locate in a text file
+
+### usage examples
+Bellow it is presented the location of the word **Queen** in *Alice's Adventures in Wonderland*:
+```
+./wordchart.sh -i alice.txt -w Queen -o alice-queen.png
+```
+![alice wordchart for the word "Queen"](images/alice-queen.png)
