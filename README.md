@@ -292,6 +292,6 @@ Bellow it is presented the location of the word **Queen**, **Alice** and **When*
 ./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
 ```
 ![alice wordchart for the word "Queen"](images/alice-queen.png){:height="50%" width="50%"}
-![alice wordchart for the word "Alice"](images/alice-alice.png{:height="50%" width="50%"}
-![alice wordchart for the word "When"](images/alice-When.png{:height="50%" width="50%"}
-![alice wordchart for the word "when"](images/alice-when.png{:height="50%" width="50%"}
+![alice wordchart for the word "Alice"](images/alice-alice.png){:height="50%" width="50%"}
+![alice wordchart for the word "When"](images/alice-When.png){:height="50%" width="50%"}
+![alice wordchart for the word "when"](images/alice-when.png){:height="50%" width="50%"}
