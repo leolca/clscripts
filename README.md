@@ -283,8 +283,10 @@ Create a word chart, presenting each occurrence of a word along a text as a vert
 * **-w** or **--word**: the given word you whant to locate in a text file
 
 ### usage examples
-Bellow it is presented the location of the word **Queen** in *Alice's Adventures in Wonderland*:
-```
-./wordchart.sh -i alice.txt -w Queen -o alice-queen.png
+Bellow it is presented the location of the word **Queen** and **Alice** in *Alice's Adventures in Wonderland*:
+```./wordchart.sh -i alice.txt -w Queen -o alice-queen.tex; pdflatex alice-queen.tex; convert -flatten -density 150 alice-queen.pdf -quality 90 alice-queen.png; evince alice-queen.pdf &
+
+./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.tex; convert -flatten -density 150 alice-alice.pdf -quality 90 alice-alice.png; evince alice-alice.pdf &
 ```
 ![alice wordchart for the word "Queen"](images/alice-queen.png)
+![alice wordchart for the word "Alice"](images/alice-alice.png)
