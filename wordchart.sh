@@ -68,5 +68,9 @@ fi
 
 WTOTAL=$(wc -w "$INPUTFILE" | awk '{print $1}')
 
-./wordposition.sh -i $INPUTFILE -w $WORD | gnuplot -p -e "set terminal wxt size 800,200; set size ratio 0.125; set yrange[10:20]; set xrange[0:$WTOTAL]; unset ytics; set title 'wordchart: $INPUTFILE'; plot '-' u 1:(10):(0):(20) with vectors nohead title '$WORD'"
+if [ -z "$OUTPUTFILE" ]; then
+   ./wordposition.sh -i $INPUTFILE -w $WORD | gnuplot -p -e "set terminal wxt size 800,200; set size ratio 0.125; set yrange[10:20]; set xrange[0:$WTOTAL]; unset ytics; set title 'wordchart: $INPUTFILE'; plot '-' u 1:(10):(0):(20) with vectors nohead title '$WORD'"
+else
+   ./wordposition.sh -i $INPUTFILE -w $WORD | gnuplot -p -e "set terminal png size 800,200; set output '$OUTPUTFILE'; set size ratio 0.125; set yrange[10:20]; set xrange[0:$WTOTAL]; unset ytics; set title 'wordchart: $INPUTFILE'; plot '-' u 1:(10):(0):(20) with vectors nohead title '$WORD'"
+fi
 
