@@ -1,0 +1,141 @@
+fit Zipf model to data
+----------------------
+
+./wordcounttfl.sh ../entropy-estimation/scripts/ulysses.txt > /tmp/ulysses.tfl
+
+======= R - fit - least squares =======
+Zipf law
+p_k = H_{N,s} k^{-s}
+log p_k = log H_{N,s} - s log k
+
+library(zipfR)
+data.tfl = read.tfl('/tmp/ulysses.tfl')
+pk = data.tfl[,2] / sum(data.tfl[,2])
+k = data.tfl[,1]
+lfit = lsfit(x = log(k), y = log(pk), intercept = TRUE)
+ls.print(lfit)
+coef(lfit)
+
+OR
+
+
+lfit = lm(log(pk) ~ log(k))
+plot(lfit)
+abline(reg=lfit)
+
+plot(log(k), log(pk), main="Data and Fit", type = "p", col="black", pch = 16)
+abline(lfit, col="Red", lty = 1, lwd = 3)
+#legend("topright", legend = c("data","linear model"), pch = c(1, NA), lty = c(NA,1), col = c(1,2))
+legend("topright", legend = c("data","linear model"), pch = c(1, NA), lty = c(NA,1), lwd = c(NA,3), col = c("Black","Red"))
+
+==========================================
+
+
+======= R - plot frequency spectrum ======
+library(zipfR)
+data.tfl = read.tfl('/tmp/ulysses.tfl')
+data.spc = tfl2spc(data.tfl)
+plot(data.spc$m, data.spc$Vm, log="xy", xlab="f", ylab="F(k)", type="l", lty=1, col="black")
+
+pdf(file='/tmp/freqspec.pdf', height=3.5, width=5)
+plot(data.spc$m, data.spc$Vm, log="xy", xlab="f", ylab="F(k)", type="l", lty=1, col="black")
+dev.off()
+==========================================
+
+======= R - fit - maximum likelihood =======
+Zipf law
+p_k = H_{N,s} k^{-s}
+log p_k = log H_{N,s} - s log k
+
+library(zipfR)
+data.tfl = read.tfl('/tmp/ulysses.tfl')
+fk = data.tfl[,2]
+#fk = goodTuring( data.tfl[,2] )
+#fk = additivesmoothing( data.tfl[,2], 1)
+pk = data.tfl[,2] / sum(data.tfl[,2])
+k = data.tfl[,1]
+
+#x <- list()
+#for (i in 1:length(k)) {
+#  x = rbind(x,rep(k[i], fk[i]))
+#}
+
+additivesmoothing <- function(f,a) {
+  return(f+a)
+}
+
+harmonicnumber <- function(N,s) {
+  S = 0
+  for (k in 1:N) { 
+     S = S + k^(-s) 
+  }
+  return(1/S)
+}
+
+# likelihood function
+LL <- function(s) {
+  R = harmonicnumber(N,s) * k^(-s)
+  -sum(log(R)*fk)
+}
+
+library(stats4)
+N = length(data.tfl[,1])
+mle(LL, start = list(s = 1.1))
+mle(LL, start = list(s = 1.1), method = "L-BFGS-B", lower = 0.5)
+============================================
+
+
+
+
+### get Zipf exponent
+./zipfFit.R --file ulysses.tfl | awk '{print $1}' | sed -n 2p
+
+### get heaps alfa
+./fitheaps.R --file ulysses.vgc | awk '{print $1}' | sed -n 2p
+
+
+### fit Heaps law
+N: vocabulary size
+M: text length
+log N = beta log M + log alfa
+  y   =  a     x   +  b
+
+ beta = log N / log M
+
+
+library(zipfR)
+#data.tfl = read.tfl(args$file)
+#data.spc = tfl2spc(data.tfl)
+uvgc = read.vgc('/tmp/ulysses.vgc')
+M = uvgc$N
+N = uvgc$V
+beta = log(N[length(N)])/log(M[length(M)])
+lfit = lsfit(x = log(M), y = log(N), intercept = TRUE) 
+#ls.print(lfit)
+#coef(lfit)
+alfa = coef(lfit)[["Intercept"]]
+
+
+
+
+
+
+
+
+######################## shuffle ########################
+######################## random sample ########################
+https://stackoverflow.com/questions/9245638/select-random-lines-from-a-file-in-bash
+$ shuf -n 3 /tmp/test
+$ echo -e "casa\nmala\nlaranja\nmesa\nbola" | shuf -n 3
+
+########################################################################
+
+
+
+########################################################################
+
+cat file | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -s ' ' | tr ' ' '\n'
+
+OLD: tr "A-Z" "a-z" | tr -sc "A-Za-z\'" "\n" | sed -e "s/'$//" | sed -e "s/^'//" | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" 
+NEW: awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
+########################################################################
