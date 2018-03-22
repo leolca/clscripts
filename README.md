@@ -284,14 +284,14 @@ Create a word chart, presenting each occurrence of a word along a text as a vert
 * **-c** or **--ignore-case**: case insensite mode
 
 ### usage examples
-Bellow it is presented the location of the word **Queen** and **Alice** in *Alice's Adventures in Wonderland*:
+Bellow it is presented the location of the word **Queen**, **Alice** and **When** (comparing case sensitive and case insensite) in *Alice's Adventures in Wonderland*:
 ```./wordchart.sh -i alice.txt -w Queen -o alice-queen.tex; pdflatex alice-queen.tex; convert -flatten -density 150 alice-queen.pdf -quality 90 alice-queen.png; evince alice-queen.pdf &
 
 ./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.tex; convert -flatten -density 150 alice-alice.pdf -quality 90 alice-alice.png; evince alice-alice.pdf &
 
 ./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
 ```
-![alice wordchart for the word "Queen"](images/alice-queen.png)
-![alice wordchart for the word "Alice"](images/alice-alice.png)
-![alice wordchart for the word "When"](images/alice-When.png)
-![alice wordchart for the word "when"](images/alice-when.png)
+![alice wordchart for the word "Queen"](images/alice-queen.png | width=300)
+![alice wordchart for the word "Alice"](images/alice-alice.png | width=300)
+![alice wordchart for the word "When"](images/alice-When.png | width=300)
+![alice wordchart for the word "when"](images/alice-when.png | width=300)
