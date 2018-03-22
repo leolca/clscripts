@@ -281,12 +281,17 @@ Create a word chart, presenting each occurrence of a word along a text as a vert
 * **-i** or **--input-file**: input file name
 * **-o** or **--output-file**: output file name for the png file (if not provided, just open a plot window and don't save)
 * **-w** or **--word**: the given word you whant to locate in a text file
+* **-c** or **--ignore-case**: case insensite mode
 
 ### usage examples
 Bellow it is presented the location of the word **Queen** and **Alice** in *Alice's Adventures in Wonderland*:
 ```./wordchart.sh -i alice.txt -w Queen -o alice-queen.tex; pdflatex alice-queen.tex; convert -flatten -density 150 alice-queen.pdf -quality 90 alice-queen.png; evince alice-queen.pdf &
 
 ./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.tex; convert -flatten -density 150 alice-alice.pdf -quality 90 alice-alice.png; evince alice-alice.pdf &
+
+./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
 ```
 ![alice wordchart for the word "Queen"](images/alice-queen.png)
 ![alice wordchart for the word "Alice"](images/alice-alice.png)
+![alice wordchart for the word "When"](images/alice-When.png)
+![alice wordchart for the word "when"](images/alice-when.png)
