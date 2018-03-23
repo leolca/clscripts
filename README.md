@@ -11,6 +11,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 6. [surroundingcontext.sh](#surroundingcontext)
 7. [wordposition.sh](#wordposition)
 8. [wordchart.sh](#wordchart)
+9. [simons.py](#simons)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -296,3 +297,45 @@ $./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.t
 ![alice wordchart for the word "Alice"](images/alice-alice.png)
 ![alice wordchart for the word "When"](images/alice-When.png)
 ![alice wordchart for the word "when"](images/alice-when.png)
+
+
+
+## simons.py <a name="simons"></a>
+
+### parameters
+* **-i** or **--input-file**: input file name
+
+### usage examples
+```
+$ cat alice.txt | ./simons.py | head -n 200 | tail -n 10
+0
+0
+0
+0
+1
+1
+0
+1
+0
+0
+...
+
+$ cat alice.txt | ./simons.py --newratio
+0.186963590306
+
+$ ./simons.py -i alice.txt --newratioevo | head -n 100 | tail -n 10
+0.758241758242
+0.75
+0.752688172043
+0.744680851064
+0.747368421053
+0.739583333333
+0.742268041237
+0.744897959184
+0.737373737374
+0.74
+
+$ FILENAME='alice.txt'; MOVAVGORDER=100; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}'); cat $FILENAME | ./simons.py | ./movavg.awk -v P=$MOVAVGORDER | gnuplot -e "set terminal png; set output 'newworddensity.png'; set xlabel 'text length'; set ylabel 'new word density'; set xrange[0:$WTOTAL]; set title 'new word density in file $FILENAME using a mov avg of order $MOVAVGORDER'; set key right top; plot '/dev/stdin' with lines title 'alice'"; display newworddensity.png 
+```
+
+![new word density in alice](images/newworddensity.png)
