@@ -12,6 +12,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 7. [wordposition.sh](#wordposition)
 8. [wordchart.sh](#wordchart)
 9. [simons.py](#simons)
+10. [swnwdensity.sh](#swnwdensity)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -342,3 +343,19 @@ $ FILENAME='alice.txt'; MOVAVGORDER=500; WTOTAL=$(wc -w "$FILENAME" | awk '{prin
 ```
 
 ![new word density in alice](images/newworddensity.png)
+
+
+
+## swnwdensity.py <a name="swnwdensity"></a>
+Sliding window new word density (uses half window overlap).
+
+### parameters
+* file name
+* window length
+
+### usage examples
+```
+$ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}'); MAXLEN=$((WTOTAL - WLEN)); XMAX=$(echo 2*$MAXLEN/$WLEN-1 | bc); ./swnwdensity.sh $FILENAME $WLEN | gnuplot -e "set terminal png; set output 'swnewworddensity.png'; set xlabel 'text length'; set ylabel 'new word density'; set xrange[0:$XMAX]; set title 'sliding window new word density in file $FILENAME using window of length $WLEN'; set key right top; plot '/dev/stdin' with lines title 'alice'"; display swnewworddensity.png 
+```
+
+![sliding window new word density in alice](images/swnewworddensity.png)
