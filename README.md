@@ -276,6 +276,24 @@ $ ./wordposition.sh -i alice.txt -w clock -b
 83127
 ```
 
+### inter-token distance ###
+The difference between consecutive lines in the previous result might be used to create a inter-token distance vector. 
+```
+WORD='the'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}'
+```
+The result is further redirected to create a histogram of inter-token distance for a given word. We present two examples below, for the words: *time* and *the*.
+
+```
+$ WORD='time'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}' | sort -n | gnuplot -p -e "numbins='25'; maxvalue='2000'; minvalue='1'; lbllegend='$WORD'; lblxlabel='intre-token distance'; lblylabel='counts'; outputfilename='$WORD-intertokenhist.png'" histogram.gp; display $WORD-intertokenhist.png
+```
+![inter-token histogram for the word "time"](images/time-intertokenhist.png)
+```
+$ WORD='the'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}' | sort -n | gnuplot -p -e "numbins='25'; maxvalue='200'; minvalue='1'; lbllegend='$WORD'; lblxlabel='intre-token distance'; lblylabel='counts'; outputfilename='$WORD-intertokenhist.png'" histogram.gp; display $WORD-intertokenhist.png
+```
+![inter-token histogram for the word "the"](images/the-intertokenhist.png)
+
+
+
 ## wordchart.sh <a name="wordchart"></a>
 Create a word chart, presenting each occurrence of a word along a text as a vertical bar.
 
