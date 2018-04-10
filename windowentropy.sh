@@ -7,9 +7,10 @@ display_help() {
     echo "   -h, --help                 Display this help message"
     echo "   -i, --input-file           Specify input file name"
     echo "   -n, --num-windows          Specify the number of windows desired"
-    echo "   -s, --scale-windows        Specify whether windows length are linearly (linear) or logarithmically (log) scaled"
+    echo "   -s, --scale-windows        Specify whether windows length are linearly ('linear') or logarithmically ('log') scaled"
     echo "   -c, --cum-window           Specify whether to use sliding windows or cumulative windows"
-    echo "   -t, --token                Specify token (char, word, line)"
+    echo "   -t, --token                Specify token ('char', 'word', 'line')"
+    echo "   -m, --method               Choose the method to compute entropy ('mle','plugin','jk','jackknife','mm' or 'millermadow')"
     echo
     # echo some stuff here for the -a or --add-options 
     exit 1
@@ -45,6 +46,10 @@ while [[ $# -gt 0 ]]; do
 	shift 
 	TOKEN=$1 
 	;;
+	-m|--method)
+	shift
+	METHOD=$1
+	;;
         # display help
         -h | --help)
         display_help  # Call your function
@@ -74,6 +79,6 @@ while IFS= read -r line; do
     value2=${BASH_REMATCH[2]}
   fi
   echo -en "$value1\t$value2\t"
-  ./getwindow.sh -i $INPUTFILE -s $value1 -p $value2 -t $TOKEN | ./wordcounttfl.sh -c | ./entropy.py
+  ./getwindow.sh -i $INPUTFILE -s $value1 -p $value2 -t $TOKEN | ./wordcounttfl.sh -c | ./entropy.py --method $METHOD
 done
 
