@@ -390,9 +390,10 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 ### parameters
 * **-i** or **--input-file**: input file name
 * **-n** or **--num-windows**: number of windows used in the analysis
-* **-s** or **--scale-windows**: specify whether the windows are linearly (linear) or logarithmically (log) scaled
+* **-s** or **--scale-windows**: specify whether the windows are linearly ('linear') or logarithmically ('log') scaled
 * **-c** or **--cum-window**: specify whether to use sliding windows or cumulative windows
-* **-t** or **--token**: specify which unity will be used as token (line, word, char) to define window boundaries
+* **-t** or **--token**: specify which unity will be used as token ('line', 'word', 'char') to define window boundaries
+* **-m** or **--method**: choose a method to estimate entropy ('mle','plugin','jk','jackknife','mm' or 'millermadow')
 
 ### usage examples
 ```
