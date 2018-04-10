@@ -14,6 +14,8 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 9. [simons.py](#simons)
 10. [swnwdensity.sh](#swnwdensity)
 11. [windowentropy.sh](#windowentropy)
+12. [windowindex.py](#windowindex)
+13. [getwindow.sh](#getwindow)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -383,7 +385,7 @@ $ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}')
 ## windowentropy.sh <a name="windowentropy"></a>
 Compute the entropy along windows of a text file. You must provide the number of desided windows. It will slice the text into windows and compute the entropy inside each window. The text length might be linearly (fixed window length) or logarithmically (logarithmically growing window length) subdivided into windows. The text is subdivided into windows by counting the number of tokens (line, word or character).
 
-This script uses [windowindex.py] (define window boundaries), [getwindow.sh] (extract text according to the boundaries given), [wordcounttfl.sh] (count words) and [entropy.py] (compute entropy).
+This script uses [windowindex.py] (#windowindex) (define window boundaries), [getwindow.sh] (#getwindow) (extract text according to the boundaries given), [wordcounttfl.sh] (#wordcounttfl) (count words) and [entropy.py] (#entropy) (compute entropy).
 
 ### parameters
 * **-i** or **--input-file**: input file name
@@ -404,3 +406,58 @@ This script uses [windowindex.py] (define window boundaries), [getwindow.sh] (ex
 ./windowentropy.sh -i alice.txt -n 128 -s linear -c sliding -t word | gnuplot -e "set terminal png; set output 'windowentropy-alice-slidingwindow.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice (sliding window)'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display windowentropy-alice-slidingwindow.png
 ```
 ![window entropy in alice](images/windowentropy-alice-slidingwindow.png)
+
+
+## windowindex.py <a name="windowindex"></a>
+Get star and end indexes of windows when subdividing the text extent.
+
+### parameters
+* **-i**: input file name
+* **--start**: start position (default 0)
+* **--stop**: stop position (default end of file)
+* **--token**: token used {word,char,line}
+* **--wtype**: which type of window use {cumulative,sliding}
+* **--nwin**: number of windows
+* **--wscale**: how to divide the text length into windows {linear,log,log10,log2}
+
+### usage examples
+```
+$ ./windowindex.py -i alice.txt --token line --nwin 10 --wscale log --wtype sliding
+0	2
+3	5
+6	11
+12	26
+27	58
+59	130
+131	293
+294	659
+660	1484
+1485	3340
+
+$./windowindex.py -i alice.txt --token line --nwin 10 --wscale linear --wtype sliding
+0	334
+335	668
+669	1002
+1003	1336
+1337	1670
+1671	2004
+2005	2338
+2339	2672
+2673	3006
+3007	3340
+```
+
+## getwindow.sh <a name="getwindow"></a>
+Extract text from a file give the window start and end location.
+
+### parameters
+* **-i** or **--input-file**: input file name
+* **-s** or **--start**: start position
+* **-p** or **--stop**: stop position
+* **-t** or **--token**: specifty token unity {char, word, line}
+
+### usage examples
+```
+$ ./getwindow.sh --input-file data/alice.txt --start 124 --stop 131 --token word | tr '\n' ' ' && echo "" 
+when suddenly a White Rabbit with pink eyes 
+```
