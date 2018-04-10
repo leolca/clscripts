@@ -13,6 +13,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 8. [wordchart.sh](#wordchart)
 9. [simons.py](#simons)
 10. [swnwdensity.sh](#swnwdensity)
+11. [windowentropy.sh](#windowentropy)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -377,3 +378,21 @@ $ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}')
 ```
 
 ![sliding window new word density in alice](images/swnewworddensity.png)
+
+
+## windowentropy.sh <a name="windowentropy"></a>
+Compute the entropy along windows of a text file.
+
+### parameters
+* **-i** or **--input-file**: input file name
+* **-n** or **--num-windows**: number of windows used in the analysis
+* **-s** or **--scale-windows**: specify wether the windows are linearly (linear) or logarithmically (log) scaled
+* **-c** or **--cum-window**: specify whether to use sliding windows or cumulative windows
+* **-t** or **--token**: specify which unity will be used as token (line, word, char) to define window boundaries
+
+### usage examples
+```
+./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
+```
+
+![window entropy in alice](images/windowentropy-alice.png)
