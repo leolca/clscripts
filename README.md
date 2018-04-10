@@ -396,3 +396,9 @@ Compute the entropy along windows of a text file.
 ```
 
 ![window entropy in alice](images/windowentropy-alice.png)
+
+
+```
+./windowentropy.sh -i alice.txt -n 128 -s linear -c sliding -t word | gnuplot -e "set terminal png; set output 'windowentropy-alice-slidingwindow.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice (sliding window)'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display windowentropy-alice-slidingwindow.png
+```
+![window entropy in alice](images/windowentropy-alice-slidingwindow.png)
