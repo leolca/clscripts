@@ -409,6 +409,15 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 ![window entropy in alice](images/windowentropy-alice-slidingwindow.png)
 
 
+```
+$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mle > /tmp/mle
+$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mm > /tmp/mm
+$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m jackknife > /tmp/jackknife
+$ paste /tmp/mle /tmp/mm /tmp/jackknife | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set datafile separator whitespace; set terminal png; set output 'images/windowentropy-alice-compared.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'mle', '-' using 2:6 with lines title 'mm', '-' using 2:9 with lines title 'jackknife'" && display images/windowentropy-alice-compared.png
+```
+
+![window entropy in alice](images/windowentropy-alice-compared.png)
+
 ## windowindex.py <a name="windowindex"></a>
 Get star and end indexes of windows when subdividing the text extent.
 
