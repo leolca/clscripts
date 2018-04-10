@@ -458,6 +458,6 @@ Extract text from a file give the window start and end location.
 
 ### usage examples
 ```
-$ ./getwindow.sh --input-file data/alice.txt --start 124 --stop 131 --token word | tr '\n' ' ' && echo "" 
+$ ./getwindow.sh --input-file alice.txt --start 124 --stop 131 --token word | tr '\n' ' ' && echo "" 
 when suddenly a White Rabbit with pink eyes 
 ```
