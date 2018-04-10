@@ -381,7 +381,9 @@ $ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}')
 
 
 ## windowentropy.sh <a name="windowentropy"></a>
-Compute the entropy along windows of a text file.
+Compute the entropy along windows of a text file. You must provide the number of desided windows. It will slice the text into windows and compute the entropy inside each window. The text length might be linearly (fixed window length) or logarithmically (logarithmically growing window length) subdivided into windows. The text is sudivided into windows by counting the number of tokens (line, word or character).
+
+This script uses [windowindex.py] (define window boundaries), [getwindow.sh] (extract text according to the boundaries given), [wordcounttfl.sh] (count words) and [entropy.py] (compute entropy).
 
 ### parameters
 * **-i** or **--input-file**: input file name
