@@ -257,7 +257,7 @@ Get word locations in a given text file. The default behaviour is to show the wo
 ### parameters
 * **-i** or **--input-file**: input file name
 * **-o** or **--output-file**: output file name
-* **-w** or **--word**: the given word you whant to locate in a text file
+* **-w** or **--word**: the given word you want to locate in a text file
 * **-b** or **--byte**: return word location measured in byte position
 
 ### usage examples
@@ -301,8 +301,8 @@ Create a word chart, presenting each occurrence of a word along a text as a vert
 ### parameters
 * **-i** or **--input-file**: input file name
 * **-o** or **--output-file**: output file name for the png file (if not provided, just open a plot window and don't save)
-* **-w** or **--word**: the given word you whant to locate in a text file
-* **-c** or **--ignore-case**: case insensite mode
+* **-w** or **--word**: the given word you want to locate in a text file
+* **-c** or **--ignore-case**: case insensitive mode
 
 ### usage examples
 Bellow it is presented the location of the word **Queen**, **Alice** and **When** (comparing case sensitive and case insensite) in *Alice's Adventures in Wonderland*:
@@ -381,14 +381,14 @@ $ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}')
 
 
 ## windowentropy.sh <a name="windowentropy"></a>
-Compute the entropy along windows of a text file. You must provide the number of desided windows. It will slice the text into windows and compute the entropy inside each window. The text length might be linearly (fixed window length) or logarithmically (logarithmically growing window length) subdivided into windows. The text is sudivided into windows by counting the number of tokens (line, word or character).
+Compute the entropy along windows of a text file. You must provide the number of desided windows. It will slice the text into windows and compute the entropy inside each window. The text length might be linearly (fixed window length) or logarithmically (logarithmically growing window length) subdivided into windows. The text is subdivided into windows by counting the number of tokens (line, word or character).
 
 This script uses [windowindex.py] (define window boundaries), [getwindow.sh] (extract text according to the boundaries given), [wordcounttfl.sh] (count words) and [entropy.py] (compute entropy).
 
 ### parameters
 * **-i** or **--input-file**: input file name
 * **-n** or **--num-windows**: number of windows used in the analysis
-* **-s** or **--scale-windows**: specify wether the windows are linearly (linear) or logarithmically (log) scaled
+* **-s** or **--scale-windows**: specify whether the windows are linearly (linear) or logarithmically (log) scaled
 * **-c** or **--cum-window**: specify whether to use sliding windows or cumulative windows
 * **-t** or **--token**: specify which unity will be used as token (line, word, char) to define window boundaries
 
