@@ -397,7 +397,7 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 
 ### usage examples
 ```
-./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
+./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
 ```
 
 ![window entropy in alice](images/windowentropy-alice.png)
