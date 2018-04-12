@@ -415,8 +415,21 @@ $./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m m
 $./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m jackknife > /tmp/jackknife
 $ paste /tmp/mle /tmp/mm /tmp/jackknife | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set datafile separator whitespace; set terminal png; set output 'images/windowentropy-alice-compared.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'mle', '-' using 2:6 with lines title 'mm', '-' using 2:9 with lines title 'jackknife'" && display images/windowentropy-alice-compared.png
 ```
-
 ![window entropy in alice](images/windowentropy-alice-compared.png)
+
+
+Bellow is presented an example comparing the entropy evolution with the text length in the original text and a shuffled version of the text.
+```
+$ cat Alice.txt | tr "A-Z" "a-z" | tr "’" "'" | tr -s "'" | tr -dc "a-z '\n" | tr -s "\n" > alice.txt
+$ cat alice.txt | tr " " "\n" | tr -s "\n" | shuf > alice_shuffled.txt
+$ ./windowentropy.sh -i alice_shuffled.txt -n 64 -s linear -c cumulative -t word -m mle > alice_hs
+$ ./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle > alice_h
+$ paste alice_h alice_hs | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout |
+gnuplot -e "set terminal png; set output 'windowentropy-alice-shuffled.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice using mle entropy'; set key right bottom; plot '-' using 2:3 with lines title 'alice', '-' using 5:6 with lines title 'shuffled alice'"
+$ display windowentropy-alice-shuffled.png
+```
+![window entropy in alice vs shuffled](images/windowentropy-alice-shuffled.png)
+
 
 ## windowindex.py <a name="windowindex"></a>
 Get star and end indexes of windows when subdividing the text extent.
