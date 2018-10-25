@@ -6,6 +6,7 @@ display_help() {
     echo
     echo "   -h, --help                 Display this help message"
     echo "   -c, --counts               Show only counts"
+    echo "   -w  --words 		Words only"
     echo "   -o, --output-file          Specify output file name"
     echo "   -i, --input-file           Specify input file name"
     echo
@@ -18,9 +19,13 @@ display_help() {
 while [[ $# -gt 0 ]]; do
     key="$1"
     case "$key" in
-        # This is a flag type option. Will catch either -f or --foo
+        # This is a flag type option. Will catch either -c or --counts
         -c|--counts)
         COUNTSONLY=1
+        ;;
+        # This is a flag type option. Will catch either -w or --words
+        -w|--words)
+        WORDSONLY=1
         ;;
         # This is an arg value type option. Will catch -o value or --output-file value
         -o|--output-file)
@@ -60,7 +65,7 @@ if [ ! -z "$OUTPUTFILE" ]; then
   fi
 fi 
 
-if [ -z "$COUNTSONLY" ]; then
+if [ -z "$COUNTSONLY" ] && [ -z "$WORDSONLY" ] ; then
    if [ -z "$OUTPUTFILE" ]; then
       echo -e "f\ttype" 
    else
@@ -68,8 +73,10 @@ if [ -z "$COUNTSONLY" ]; then
    fi
 fi
 
-if [ "$COUNTSONLY" ]; then
+if [ "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]; then
    SEDSTR="\1"
+elif [ ! "$COUNTSONLY" ] &&  [ "$WORDSONLY" ]; then
+   SEDSTR="\2"
 else
    SEDSTR="\1\t\2"
 fi
