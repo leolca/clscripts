@@ -17,6 +17,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 12. [windowindex.py](#windowindex)
 13. [getwindow.sh](#getwindow)
 14. [downloadGutenbergTop100in30days.sh](#downloadGutenbergTop100)
+15. [downloadTheFederalistPapers.sh](downloadTheFederalistPapers)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -505,3 +506,16 @@ f	type
 168186	that
 148586	he
 ```
+
+
+## downloadTheFederalistPapers.sh <a name="downloadTheFederalistPapers"></a>
+Download The Federalist Papers.
+
+d### usage examples
+```
+$ ./downloadfeds.sh 
+$ cat *.txt | ./wordcounttfl.sh -w > vocabulary
+$ head -n 2000 vocabulary > vocabularytop2000
+$ python cosineexamplefederalist.py 
+```
+![the federalist papers](images/federalistpapers.png)
