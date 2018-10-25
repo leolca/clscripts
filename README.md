@@ -16,6 +16,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 11. [windowentropy.sh](#windowentropy)
 12. [windowindex.py](#windowindex)
 13. [getwindow.sh](#getwindow)
+14. [downloadGutenbergTop100in30days.sh] (#downloadGutenbergTop100)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -483,4 +484,24 @@ Extract text from a file give the window start and end location.
 ```
 $ ./getwindow.sh --input-file alice.txt --start 124 --stop 131 --token word | tr '\n' ' ' && echo "" 
 when suddenly a White Rabbit with pink eyes 
+```
+
+
+## downloadGutenbergTop100in30days.sh <a name="downloadGutenbergTop100"></a>
+Download the top 100 ebooks (in the last 30 days) from the Project Gutenberg. Files are saved in current folder and processed, removing carriage returns (\r), translating non-ASCII characteres, removing disclaimers and removing BOM (Byte order mark).
+
+### usage examples
+```
+$ ./downloadGutenbergTop100in30days.sh
+$ cat *.txt | ./wordcounttfl.sh | head 
+f	type
+694631	the
+461851	and
+380760	of
+330844	to
+237780	a
+203042	i
+202164	in
+168186	that
+148586	he
 ```
