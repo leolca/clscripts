@@ -23,10 +23,10 @@ Count the occurrence of words in a text file (or from stdin) and output a list o
 ### usage examples
 The examples bellow will count the occurrences of words in ulysses.txt and output the result to the standard output:
 ```
-$./wordcounttfl.sh ulysses.txt 
-$./wordcounttfl.sh -i ulysses.txt
-$./wordcounttfl.sh --input-file ulysses.txt
-$cat ulysses.txt | ./wordcounttfl.sh 
+$ ./wordcounttfl.sh ulysses.txt 
+$ ./wordcounttfl.sh -i ulysses.txt
+$ ./wordcounttfl.sh --input-file ulysses.txt
+$ cat ulysses.txt | ./wordcounttfl.sh 
 ```
 Any of them will give the same result:
 ```
@@ -45,18 +45,18 @@ Any of them will give the same result:
 
 If you want to save the result in a file, you may simply redirect it to the desired file:
 ```
-$./wordcounttfl.sh ulysses.txt > ulysses.tfl
+$ ./wordcounttfl.sh ulysses.txt > ulysses.tfl
 ```
 or you may specify it as an argument to the script:
 ```
-$./wordcounttfl.sh -i ulysses.txt -o ulysses.tfl
-$./wordcounttfl.sh --input-file ulysses.txt --output-file ulysses.tfl
+$ ./wordcounttfl.sh -i ulysses.txt -o ulysses.tfl
+$ ./wordcounttfl.sh --input-file ulysses.txt --output-file ulysses.tfl
 ```
 
 It is possible to output only the count values as exemplified bellow:
 ```
-./wordcounttfl.sh -i ulysses.txt -c -o ulysses.cnt
-./wordcounttfl.sh ---input-file ulysses.txt --output-file ulysses.cnt --counts
+$ ./wordcounttfl.sh -i ulysses.txt -c -o ulysses.cnt
+$ ./wordcounttfl.sh ---input-file ulysses.txt --output-file ulysses.cnt --counts
 ```
 
 Using the frequency spectrum file with zipfR:
@@ -111,7 +111,7 @@ Extract vocabulary size from different lengths of a text file, suitable to check
 ### usage examples
 Given only the input file name, it will compute 100 linear spaced samples of the vocabulary growth. The first column represents the text length and the second the vocabulary size.
 ```
-./heapslaw.py -i Ulysses.txt
+$ ./heapslaw.py -i Ulysses.txt
 ```
 
 ```
@@ -132,13 +132,13 @@ Given only the input file name, it will compute 100 linear spaced samples of the
 
 We might also explicitly specify other parameters:
 ```
-./heapslaw.py -i Ulysses.txt --maxlen 264965 --samples 100
+$ ./heapslaw.py -i Ulysses.txt --maxlen 264965 --samples 100
 ```
 The example above will produce the same result, since the parameters given are the default values. 
 
 Using **heapslaw.py** along with **gnuplot** to produce a vocabulary growth curve:
 ```
-./heapslaw.py -i ulysses.txt | gnuplot -e "set terminal png; set output 'ulysses.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set key right bottom; plot '/dev/stdin' with lines title 'ulysses'" 
+$ ./heapslaw.py -i ulysses.txt | gnuplot -e "set terminal png; set output 'ulysses.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set key right bottom; plot '/dev/stdin' with lines title 'ulysses'" 
 ```
 ![ulysses vocabulary growth curve](images/ulysses.png)
 
@@ -156,7 +156,7 @@ Create vocabulary growth curve data, compatible with zipfR package. Like **heaps
 ### usage examples
 For the basic usage, you just need to provide the text file.
 ```
-/vgc.py -i ulysses.txt
+$ ./vgc.py -i ulysses.txt
 ```
 The result will be:
 ```
@@ -176,7 +176,7 @@ N       V       V1
 
 You can also read text from stdin.
 ```
-cat ulysses.txt | ./vgc.py --maxlen 10 -V 3
+$ cat ulysses.txt | ./vgc.py --maxlen 10 -V 3
 ```
 
 The result is:t
@@ -206,7 +206,7 @@ $ R
 
 Or it might be done directly on shell using **gnuplot**:
 ```
-./vgc.py -i ulysses.txt --samples 256 --log -V 3 -c | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set terminal png; set output 'ulysses_vgc2.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set title 'Ulysses - vocabulary growth'; set key left top; plot '-' using 1:2 with lines title 'vocabulary', '-' using 1:3 with lines title 'hapax legomena', '-' using 1:4 with lines title 'dis legomenon'"
+$ ./vgc.py -i ulysses.txt --samples 256 --log -V 3 -c | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set terminal png; set output 'ulysses_vgc2.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set title 'Ulysses - vocabulary growth'; set key left top; plot '-' using 1:2 with lines title 'vocabulary', '-' using 1:3 with lines title 'hapax legomena', '-' using 1:4 with lines title 'dis legomenon'"
 ```
 **awk** is used to add an *e* to the end and **tee** is used to replicate the *stdout* since **gnuplot** needs one data for each line.
 ![ulysses vocabulary, hapax legomena and dis legomenon growth curves](images/ulysses_vgc2.png)
@@ -218,10 +218,10 @@ Estimate the distribution of word length from a text file (or from stdin) and ou
 ### usage examples
 We estimate bellow the word length distribution in *Alice's Adventures in Wonderland*:
 ```
-$./wordslengthdist.sh alice.txt 
-$./wordslengthdist.sh -i alice.txt
-$./wordslengthdist.sh --input-file alice.txt
-$cat alice.txt | ./wordslengthdist.sh 
+$ ./wordslengthdist.sh alice.txt 
+$ ./wordslengthdist.sh -i alice.txt
+$ ./wordslengthdist.sh --input-file alice.txt
+$ cat alice.txt | ./wordslengthdist.sh 
 ```
 
 The result is plotted using **gnuplot**:
@@ -245,7 +245,7 @@ Show text surrounding context for a given word.
 ### usage examples
 We present bellow the context of the word **clock** in *Alice's Adventures in Wonderland*:
 ```
-$./surroundingcontext.sh -i alice.txt -w clock -n 3
+$ ./surroundingcontext.sh -i alice.txt -w clock -n 3
 doesn’t tell what o’clock it is
 liked with the clock
 it were nine o’clock in the morning
@@ -282,7 +282,7 @@ $ ./wordposition.sh -i alice.txt -w clock -b
 ### inter-token distance ###
 The difference between consecutive lines in the previous result might be used to create a inter-token distance vector. 
 ```
-WORD='the'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}'
+$ WORD='the'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}'
 ```
 The result is further redirected to create a histogram of inter-token distance for a given word. We present two examples below, for the words: *time* and *the*.
 
@@ -309,11 +309,11 @@ Create a word chart, presenting each occurrence of a word along a text as a vert
 ### usage examples
 Bellow it is presented the location of the word **Queen**, **Alice** and **When** (comparing case sensitive and case insensite) in *Alice's Adventures in Wonderland*:
 ```
-$./wordchart.sh -i alice.txt -w Queen -o alice-queen.tex; pdflatex alice-queen.tex; convert -flatten -density 150 alice-queen.pdf -quality 90 alice-queen.png; evince alice-queen.pdf &
+$ ./wordchart.sh -i alice.txt -w Queen -o alice-queen.tex; pdflatex alice-queen.tex; convert -flatten -density 150 alice-queen.pdf -quality 90 alice-queen.png; evince alice-queen.pdf &
 
-$./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.tex; convert -flatten -density 150 alice-alice.pdf -quality 90 alice-alice.png; evince alice-alice.pdf &
+$ ./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.tex; convert -flatten -density 150 alice-alice.pdf -quality 90 alice-alice.png; evince alice-alice.pdf &
 
-$./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
+$ ./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
 ```
 ![alice wordchart for the word "Queen"](images/alice-queen.png)
 ![alice wordchart for the word "Alice"](images/alice-alice.png)
@@ -397,7 +397,7 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 
 ### usage examples
 ```
-./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
+$ ./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
 ```
 
 ![window entropy in alice](images/windowentropy-alice.png)
@@ -410,13 +410,26 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 
 
 ```
-$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mle > /tmp/mle
-$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mm > /tmp/mm
-$./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m jackknife > /tmp/jackknife
+$ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mle > /tmp/mle
+$ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mm > /tmp/mm
+$ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m jackknife > /tmp/jackknife
 $ paste /tmp/mle /tmp/mm /tmp/jackknife | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set datafile separator whitespace; set terminal png; set output 'images/windowentropy-alice-compared.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'mle', '-' using 2:6 with lines title 'mm', '-' using 2:9 with lines title 'jackknife'" && display images/windowentropy-alice-compared.png
 ```
-
 ![window entropy in alice](images/windowentropy-alice-compared.png)
+
+
+Bellow is presented an example comparing the entropy evolution with the text length in the original text and a shuffled version of the text.
+```
+$ cat Alice.txt | tr "A-Z" "a-z" | tr "’" "'" | tr -s "'" | tr -dc "a-z '\n" | tr -s "\n" > alice.txt
+$ cat alice.txt | tr " " "\n" | tr -s "\n" | shuf > alice_shuffled.txt
+$ ./windowentropy.sh -i alice_shuffled.txt -n 64 -s linear -c cumulative -t word -m mle > alice_hs
+$ ./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle > alice_h
+$ paste alice_h alice_hs | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout |
+gnuplot -e "set terminal png; set output 'windowentropy-alice-shuffled.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice using mle entropy'; set key right bottom; plot '-' using 2:3 with lines title 'alice', '-' using 5:6 with lines title 'shuffled alice'"
+$ display windowentropy-alice-shuffled.png
+```
+![window entropy in alice vs shuffled](images/windowentropy-alice-shuffled.png)
+
 
 ## windowindex.py <a name="windowindex"></a>
 Get star and end indexes of windows when subdividing the text extent.
@@ -444,7 +457,7 @@ $ ./windowindex.py -i alice.txt --token line --nwin 10 --wscale log --wtype slid
 660	1484
 1485	3340
 
-$./windowindex.py -i alice.txt --token line --nwin 10 --wscale linear --wtype sliding
+$ ./windowindex.py -i alice.txt --token line --nwin 10 --wscale linear --wtype sliding
 0	334
 335	668
 669	1002
