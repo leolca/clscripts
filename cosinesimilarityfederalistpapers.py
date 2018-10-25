@@ -9,12 +9,12 @@ from sklearn import manifold
 
 la = np.linalg
 
-vocabFile = '/ms/downloads/samples/the_federalist_papers/vocabularytop2000'
+vocabFile = 'vocabularytop2000'
 vocabulary = []
 with open(vocabFile,'r') as f:
   vocabulary = f.read().split()
 
-dbpath = '/ms/downloads/samples/the_federalist_papers/'
+dbpath = '~/the_federalist_papers/'
 txtFiles = [os.path.join(dbpath, f) for f in os.listdir(dbpath) if os.path.isfile(os.path.join(dbpath, f)) and  f.endswith(".txt")]
 shortNames = [f for f in os.listdir(dbpath) if os.path.isfile(os.path.join(dbpath, f)) and  f.endswith(".txt")]
 
