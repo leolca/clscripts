@@ -513,7 +513,7 @@ Download The Federalist Papers.
 
 ### usage examples
 ```
-$ ./downloadfeds.sh 
+$ ./downloadTheFederalistPapers.sh 
 $ cat *.txt | ./wordcounttfl.sh -w > vocabulary
 $ head -n 2000 vocabulary > vocabularytop2000
 $ python cosineexamplefederalist.py 
