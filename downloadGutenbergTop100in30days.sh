@@ -5,7 +5,7 @@ function has_bom() {
 }
 
 function validate_url(){
-  if [[ `wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then echo -e "true\c"; else echo -e "false\c"; fi
+  if [[ `wget -S --spider $1  2>&1 | grep 'HTTP/1.1 200 OK\|HTTP/1.0 200 OK'` ]]; then echo -e "true\c"; else echo -e "false\c"; fi
 }
 
 # remove empty files
