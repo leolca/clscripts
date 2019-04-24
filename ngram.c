@@ -9,9 +9,16 @@
 
 void PrintHelp()
 {
-    printf("--length, -n  <n>: set ngram length\n");
-    printf("--word, -w       : word n-grams mode\n");
-    printf("--help           : show help\n");
+    printf("Usage: ngram [OPTIONS]... [FILE]...\n");
+    printf("Output the n-grams from a given FILE to standard output,\nprinting each ngram in a different line.\n");
+    printf("Whitespace is considered a delimiter, n-grams are not allowed to countain any.\n\n");
+    printf("With no FILE, or when FILE is -, read standard input.\n");
+    printf("  -n, --length <n>     set n-gram length (n)\n");
+    printf("  -w, --word           word n-grams mode\n");
+    printf("  -b, --no-boundary    remove whitespace boundary restriction\n");
+    printf("  -h, --help           display this help and exit\n\n");
+    printf("Examples:\n");
+    printf("  ngram -n 3 file   Output tri-grams in file.\n");
     exit(1);
 }
 
@@ -45,32 +52,25 @@ int main(int argc, char *argv[])
   int opt;
   int len = 1;
   int wordmode_flag = 0;
+  int boundary_flag = 1;
 
-  while (1)  
+  const char* const short_opts = "n:wbh";
+  static struct option long_options[] =
   {
-    const char* const short_opts = "n:w";
-    static struct option long_options[] =
-    {
-       {"word", no_argument,         0, 'w'},
        {"length", required_argument, 0, 'n'},
+       {"word", no_argument,         0, 'w'},
+       {"no-boundary", no_argument,  0, 'b'},
        {"help"  , no_argument,       0, 'h'},
        {0       , no_argument,       0,  0 }
-    };
+  };
 
-    /* getopt_long stores the option index here. */
-    int option_index = 0;
-
-    opt = getopt_long (argc, argv, short_opts, long_options, &option_index);
-
-    /* Detect the end of the options. */
-    if (opt == -1)
-       break;
+  while ((opt = getopt_long (argc, argv, short_opts, long_options, NULL)) != -1)
+  {
     switch (opt) 
     {
        case 'n':
- 	  //printf ("option -l with value `%s'\n", optarg);
 	  len = atoi(optarg);
-	  if(len == 0) 
+	  if(len < 1) 
 	  {
              printf("Invalid length!\n");
 	     exit (-1);
@@ -78,6 +78,9 @@ int main(int argc, char *argv[])
           break;
        case 'w':
 	  wordmode_flag = 1;
+	  break;
+       case 'b':
+	  boundary_flag = 0;
 	  break;
        case 'h': // -h or --help
        case '?': // Unrecognized option
@@ -93,14 +96,18 @@ int main(int argc, char *argv[])
     wint_t *ngram = (wint_t*) malloc(sizeof(wint_t) * (len + 1));
     for(int i=0; i<len; i++) ngram[i]=' ';
     ngram[len] = '\0';
-    //while( read(0, buf, sizeof(buf)) ) {
     while( (buf = getwchar()) != WEOF ) {
        for(int i=0; i<len-1; i++)
           ngram[i] = ngram[i+1];
        ngram[len-1] = buf;
        if (isngram(ngram)) 
-  	  if (not_blank(ngram)) 
-             printf("%ls\n", ngram);
+  	  if(boundary_flag)
+	  {
+             if (not_blank(ngram)) 
+                printf("%ls\n", ngram);
+	  }
+          else
+	     printf("%ls\n", ngram);
     }
   }
   else
@@ -109,7 +116,6 @@ int main(int argc, char *argv[])
     wint_t buf;
     wint_t wbuf[WORDMAXLEN];
     wint_t **ngram = (wint_t **) malloc(sizeof(wint_t*) * len);
-    //while( read(0, buf, sizeof(buf)) ) {
     while( (buf = getwchar()) != WEOF ) {
        if (buf != ' ' && buf != '\n' && buf != '\0')
           wbuf[count++] = buf;
