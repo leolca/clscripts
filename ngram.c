@@ -35,6 +35,7 @@ void PrintHelp()
     printf("  -n, --length <n>     set n-gram length (n)\n");
     printf("  -w, --word           word n-grams mode\n");
     printf("  -b, --no-boundary    remove whitespace boundary restriction\n");
+    printf("  -i, --input          input filename (if not provided, read from stdin)\n");
     printf("  -h, --help           display this help and exit\n\n");
     printf("Examples:\n");
     printf("  ngram -n 3 file   Output tri-grams in file.\n");
@@ -72,13 +73,15 @@ int main(int argc, char *argv[])
   int len = 1;
   int wordmode_flag = 0;
   int boundary_flag = 1;
+  FILE *stream = NULL;
 
-  const char* const short_opts = "n:wbh";
+  const char* const short_opts = "n:wbih";
   static struct option long_options[] =
   {
        {"length", required_argument, 0, 'n'},
        {"word", no_argument,         0, 'w'},
        {"no-boundary", no_argument,  0, 'b'},
+       {"input", no_argument,        0, 'i'},
        {"help"  , no_argument,       0, 'h'},
        {0       , no_argument,       0,  0 }
   };
@@ -101,6 +104,9 @@ int main(int argc, char *argv[])
        case 'b':
 	  boundary_flag = 0;
 	  break;
+       case 'i':
+	  if((stream = fopen("sample.txt","r"))==NULL) { printf("Input file not found!\n"); exit(-1); }
+	  break;
        case 'h': // -h or --help
        case '?': // Unrecognized option
        default:
@@ -108,6 +114,7 @@ int main(int argc, char *argv[])
           break;
     }
   }
+  if (stream == NULL) stream = stdin;
 
   if(!wordmode_flag)
   {
@@ -115,7 +122,7 @@ int main(int argc, char *argv[])
     wint_t *ngram = (wint_t*) malloc(sizeof(wint_t) * (len + 1));
     for(int i=0; i<len; i++) ngram[i]=' ';
     ngram[len] = '\0';
-    while( (buf = getwchar()) != WEOF ) 
+    while( (buf = getwc(stream)) != WEOF ) 
     {
        if(errno==EILSEQ) {printf("illegal sequence"); exit(-1);}
        for(int i=0; i<len-1; i++)
@@ -137,7 +144,7 @@ int main(int argc, char *argv[])
     wint_t buf;
     wint_t wbuf[WORDMAXLEN];
     wint_t **ngram = (wint_t **) malloc(sizeof(wint_t*) * len);
-    while( (buf = getwchar()) != WEOF ) 
+    while( (buf = getwc(stream)) != WEOF ) 
     {
        if(errno==EILSEQ) {printf("illegal sequence"); exit(-1);}
        if (buf != ' ' && buf != '\n' && buf != '\0')
@@ -171,5 +178,6 @@ int main(int argc, char *argv[])
        }
     }
   }
+  fclose(stream);
   return 0;
 } 
