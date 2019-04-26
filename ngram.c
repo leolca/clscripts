@@ -1,9 +1,28 @@
+/*
+ *  This file is part of the clscripts (https://github.com/leolca/clscripts).
+ *  Copyright (c) 2019 Leonardo Araujo (leolca@gmail.com).
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>
+ * 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
 #include <wchar.h> 
 #include <locale.h>
+#include <errno.h>
 
 #define WORDMAXLEN 100
 
@@ -96,7 +115,9 @@ int main(int argc, char *argv[])
     wint_t *ngram = (wint_t*) malloc(sizeof(wint_t) * (len + 1));
     for(int i=0; i<len; i++) ngram[i]=' ';
     ngram[len] = '\0';
-    while( (buf = getwchar()) != WEOF ) {
+    while( (buf = getwchar()) != WEOF ) 
+    {
+       if(errno==EILSEQ) {printf("illegal sequence"); exit(-1);}
        for(int i=0; i<len-1; i++)
           ngram[i] = ngram[i+1];
        ngram[len-1] = buf;
@@ -116,7 +137,9 @@ int main(int argc, char *argv[])
     wint_t buf;
     wint_t wbuf[WORDMAXLEN];
     wint_t **ngram = (wint_t **) malloc(sizeof(wint_t*) * len);
-    while( (buf = getwchar()) != WEOF ) {
+    while( (buf = getwchar()) != WEOF ) 
+    {
+       if(errno==EILSEQ) {printf("illegal sequence"); exit(-1);}
        if (buf != ' ' && buf != '\n' && buf != '\0')
           wbuf[count++] = buf;
        else
