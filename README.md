@@ -18,8 +18,8 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 13. [getwindow.sh](#getwindow)
 14. [downloadGutenbergTop100in30days.sh](#downloadGutenbergTop100)
 15. [downloadTheFederalistPapers.sh](#downloadTheFederalistPapers)
-16. [wordfreq.awk] (#wordfreqawk)
-17. [ngram.awk] (#ngramawk)
+16. [wordfreq.awk](#wordfreqawk)
+17. [ngram.awk](#ngramawk)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
