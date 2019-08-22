@@ -18,6 +18,8 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 13. [getwindow.sh](#getwindow)
 14. [downloadGutenbergTop100in30days.sh](#downloadGutenbergTop100)
 15. [downloadTheFederalistPapers.sh](#downloadTheFederalistPapers)
+16. [wordfreq.awk] (#wordfreq.awk)
+17. [ngram.awk] (#ngram.awk)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -519,3 +521,49 @@ $ head -n 2000 vocabulary > vocabularytop2000
 $ python cosineexamplefederalist.py 
 ```
 ![the federalist papers](images/federalistpapers.png)
+
+
+
+## wordfreq.awk <a name="wordfreq.awk"></a>
+Compute word frequency. (code from: Arnold Robbins, Effective awk Programming)
+
+### usage examples
+The examples bellow will count the occurrences of words in ulysses.txt:
+```
+$ cat ulysses.txt | awk -f wordfreq.awk | head
+the	8031
+and	5896
+i	4711
+to	4540
+of	3738
+a	2958
+in	2554
+he	2541
+that	2454
+it	2138
+```
+
+
+## ngram.awk <a name="ngram.awk"></a>
+Compute ngrams (chars or words) frequency. 
+
+### parameters
+* **-c**: consider n-grams made of characters
+* **-w**: consider n-grams made of words
+* **-n** <NUM>: specify the n-gram length
+
+### usage examples
+The examples bellow will count the 2-grams made of characters from ulysses.txt:
+```
+$ cat ulysses.txt | awk -f ngram.awk -- -c -n 2 | head
+  21176 th
+  19368 he
+  11799 in
+  11704 an
+  10803 er
+   9264 nd
+   8904 ha
+   8536 re
+   7841 to
+   7674 ou
+```
