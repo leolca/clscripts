@@ -6,6 +6,7 @@
 # -w words n-grams   
 # -n create n-grams of n symbols (default n=2)
 # -a sort in alphabetical order (default is by frequency)
+# -c case sensitive (default is case insensitive)
 #
 # example: $ cat /tmp/ulysses.txt | tr -c 'a-zA-Z' ' ' | awk -f ngram.awk -- -n 2 -a | head
 #          $ awk -f ngram.awk -- -w -n 2 -a /tmp/ulysses.txt | head
@@ -13,7 +14,7 @@
 
 function usage()
 {
-  print("Usage: ngram [-wa [-n NUM]] [file] ") > "/dev/stderr"
+  print("Usage: ngram [-wac [-n NUM]] [file] ") > "/dev/stderr"
   exit 1
 }
 
@@ -22,8 +23,9 @@ BEGIN {
   _ngmode = "chars" # ngram mode
   _SS = ""
   _sortA = 0
+  _caseinsen = 1
   outputfile = "/dev/stdout"
-  while ((c = getopt(ARGC, ARGV, "wn:a")) != -1) {
+  while ((c = getopt(ARGC, ARGV, "wn:ac")) != -1) {
     if (c == "w") {
        _ngmode = "words"
        _SS = " "
@@ -32,6 +34,8 @@ BEGIN {
        _nglen = Optarg
     else if (c == "a")
        _sortA = 1
+    else if (c == "c")
+       _caseinsen = 0
     else
        usage()    
   }
@@ -44,7 +48,8 @@ BEGIN {
 }
 
 {
-  $0=tolower($0)
+  if (_caseinsen)
+    $0=tolower($0)
   if (_ngmode == "chars") {
     gsub(/[^[:alnum:]_]/, "", $0)
     split($0,symbols,"")
