@@ -1,16 +1,19 @@
-# ngram.awk --- extract n-grams from file
+# ngram.awk --- extract n-grams from file 
+#               (characters are considered the default symbols)
 
 # Options:
 #
-# -w words n-grams   (default)
-# -c characters n-grams
+# -w words n-grams   
 # -n create n-grams of n symbols (default n=2)
+# -a sort in alphabetical order (default is by frequency)
 #
+# example: $ cat /tmp/ulysses.txt | tr -c 'a-zA-Z' ' ' | awk -f ngram.awk -- -n 2 -a | head
+#          $ awk -f ngram.awk -- -w -n 2 -a /tmp/ulysses.txt | head
 @include "getopt.awk"
 
 function usage()
 {
-  print("Usage: ngram -w -c -n NUM ") > "/dev/stderr"
+  print("Usage: ngram [-wa [-n NUM]] [file] ") > "/dev/stderr"
   exit 1
 }
 
@@ -18,18 +21,17 @@ BEGIN {
   _nglen  = 2 # ngram length
   _ngmode = "chars" # ngram mode
   _SS = ""
+  _sortA = 0
   outputfile = "/dev/stdout"
-  while ((c = getopt(ARGC, ARGV, "wcn:")) != -1) {
+  while ((c = getopt(ARGC, ARGV, "wn:a")) != -1) {
     if (c == "w") {
        _ngmode = "words"
        _SS = " "
     }
-    else if (c == "c") {
-       _ngmode = "chars"
-       _SS = ""
-    }
     else if (c == "n")
        _nglen = Optarg
+    else if (c == "a")
+       _sortA = 1
     else
        usage()    
   }
@@ -69,7 +71,10 @@ BEGIN {
 }
 
 END {
-  sort = "sort -k 1nr"
+  if (_sortA)
+    sort = "sort -k 2"
+  else
+    sort = "sort -k 1nr"
   for (ngram in freq_tabel)
     printf "%7i %s\n", freq_tabel[ngram], ngram	| sort
   close(sort)
