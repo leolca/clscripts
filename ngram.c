@@ -20,7 +20,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
-#include <wchar.h> 
+#include <wchar.h>
+#include <ctype.h>
 #include <locale.h>
 #include <errno.h>
 
@@ -47,7 +48,7 @@ int isngram(wint_t *ngram)
   if (ngram[0] == '\0') return 0;
   for(int i=1; ;i++) 
      if (ngram[i] == '\0') return 1;
-     else if (ngram[i] == ' ' && ngram[i+1] != '\0') return 0;
+     else if (isspace(ngram[i]) && ngram[i+1] == '\0') return 0;
 
   return 1;
 }
