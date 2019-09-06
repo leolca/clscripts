@@ -585,7 +585,6 @@ ysses
 sses,
 James
 Joyce
-oyce
 ```
 
 ### ngram.awk
