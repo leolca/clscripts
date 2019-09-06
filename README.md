@@ -19,7 +19,7 @@ Repository for computational linguistics scripts (bash, python, octave, etc).
 14. [downloadGutenbergTop100in30days.sh](#downloadGutenbergTop100)
 15. [downloadTheFederalistPapers.sh](#downloadTheFederalistPapers)
 16. [wordfreq.awk](#wordfreqawk)
-17. [ngram.awk](#ngramawk)
+17. [ngram](#ngram)
 
 ## wordcounttfl.sh <a name="wordcounttfl"></a>
 Count the occurrence of words in a text file (or from stdin) and output a list of frequency and types (words) compatible with zipfR frequency spectrum file.
@@ -544,7 +544,51 @@ it	2138
 ```
 
 
-## ngram.awk <a name="ngramawk"></a>
+## ngram <a name="ngram"></a>
+Two implementations are available: in C and in awk. Both may compute ngrams of chars or words.
+
+### ngram.c
+```
+$ ./ngram --help
+Usage: ngram [OPTIONS]... [FILE]...
+Output the n-grams from a given FILE to standard output,
+printing each ngram in a different line.
+Whitespace is considered a delimiter, n-grams are not allowed to countain any.
+
+With no FILE, or when FILE is -, read standard input.
+  -n, --length <n>     set n-gram length (n)
+  -w, --word           word n-grams mode
+  -b, --no-boundary    remove whitespace boundary restriction
+  -i, --input          input filename (if not provided, read from stdin)
+  -h, --help           display this help and exit
+
+Examples:
+  ngram -n 3 file   Output tri-grams in file.
+
+```
+
+Example using Ulysses.
+```
+$ head -n 2 ulysses.txt | ./ngram -n 5
+Proje
+rojec
+oject
+Guten
+utenb
+tenbe
+enber
+nberg
+EBook
+Ulyss
+lysse
+ysses
+sses,
+James
+Joyce
+oyce
+```
+
+### ngram.awk
 Compute ngrams (chars or words) frequency. 
 
 ### parameters
