@@ -76,13 +76,13 @@ int main(int argc, char *argv[])
   int boundary_flag = 1;
   FILE *stream = NULL;
 
-  const char* const short_opts = "n:wbih";
+  const char* const short_opts = "n:wbi:h";
   static struct option long_options[] =
   {
        {"length", required_argument, 0, 'n'},
        {"word", no_argument,         0, 'w'},
        {"no-boundary", no_argument,  0, 'b'},
-       {"input", no_argument,        0, 'i'},
+       {"input", required_argument,  0, 'i'},
        {"help"  , no_argument,       0, 'h'},
        {0       , no_argument,       0,  0 }
   };
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	  boundary_flag = 0;
 	  break;
        case 'i':
-	  if((stream = fopen("sample.txt","r"))==NULL) { printf("Input file not found!\n"); exit(-1); }
+	  if((stream = fopen(optarg,"r"))==NULL) { printf("Input file not found!\n"); exit(-1); }
 	  break;
        case 'h': // -h or --help
        case '?': // Unrecognized option
