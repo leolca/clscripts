@@ -2,7 +2,31 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+This is the documentation webpage for the **clscripts**,
+a collection of computational linguistics scripts 
+written in different languages (bash, python, octave, R, C, etc).
+
+# Table of Contents
+1. [wordcounttfl.sh](./wordcounttfl.html)<br/>
+<small>count the occurrence of words in a text file</small> 
+2. [entropy.py](./entropy.html)<br/>
+<small>estimate the Shannon's entropy for a list of counts</small>
+3. [heapslaw.py](#heapslaw)
+4. [vgc.py](#vgc)
+5. [wordslengthdist.sh](#wordslengthdist)
+6. [surroundingcontext.sh](#surroundingcontext)
+7. [wordposition.sh](#wordposition)
+8. [wordchart.sh](#wordchart)
+9. [simons.py](#simons)
+10. [swnwdensity.sh](#swnwdensity)
+11. [windowentropy.sh](#windowentropy)
+12. [windowindex.py](#windowindex)
+13. [getwindow.sh](#getwindow)
+14. [downloadGutenbergTop100in30days.sh](#downloadGutenbergTop100)
+15. [downloadTheFederalistPapers.sh](#downloadTheFederalistPapers)
+16. [wordfreq.awk](#wordfreqawk)
+17. [ngram](#ngram)
+
 
 [Link to another page](./another-page.html).
 
