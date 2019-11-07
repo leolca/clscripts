@@ -79,7 +79,7 @@ Types:    a aaron aback abaft abandon ...
 > plot(ulysses, log="xy")
 > dev.off()
 ```
-![ulysses frequency spectrum](images/ulysses_f.png)
+![ulysses frequency spectrum](docs/images/ulysses_f.png)
 
 
 You may also get the frequency counts for multiple files in parallel using GNU Parallel as shown below:
@@ -144,7 +144,7 @@ Using **heapslaw.py** along with **gnuplot** to produce a vocabulary growth curv
 ```
 $ ./heapslaw.py -i ulysses.txt | gnuplot -e "set terminal png; set output 'ulysses.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set key right bottom; plot '/dev/stdin' with lines title 'ulysses'" 
 ```
-![ulysses vocabulary growth curve](images/ulysses.png)
+![ulysses vocabulary growth curve](docs/images/ulysses.png)
 
 
 ## vgc.py <a name="vgc"></a>
@@ -206,14 +206,14 @@ $ R
 > plot(uvgc, add.m=1)
 > dev.off()
 ```
-![ulysses vocabulary growth curve and hapax legomena growth](images/ulysses_vgc.png)
+![ulysses vocabulary growth curve and hapax legomena growth](docs/images/ulysses_vgc.png)
 
 Or it might be done directly on shell using **gnuplot**:
 ```
 $ ./vgc.py -i ulysses.txt --samples 256 --log -V 3 -c | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set terminal png; set output 'ulysses_vgc2.png'; set xlabel 'text length'; set ylabel 'vocabulary size'; set title 'Ulysses - vocabulary growth'; set key left top; plot '-' using 1:2 with lines title 'vocabulary', '-' using 1:3 with lines title 'hapax legomena', '-' using 1:4 with lines title 'dis legomenon'"
 ```
 **awk** is used to add an *e* to the end and **tee** is used to replicate the *stdout* since **gnuplot** needs one data for each line.
-![ulysses vocabulary, hapax legomena and dis legomenon growth curves](images/ulysses_vgc2.png)
+![ulysses vocabulary, hapax legomena and dis legomenon growth curves](docs/images/ulysses_vgc2.png)
 
 
 ## wordslengthdist.sh <a name="wordslengthdist"></a>
@@ -232,7 +232,7 @@ The result is plotted using **gnuplot**:
 ```
 cat alice.txt | ./wordslengthdist.sh | gnuplot -e "set terminal png; set output 'alice-wlen-freq.png'; set xlabel 'word length'; set ylabel 'frequency'; set title 'word length distribution'; set key right top; set style fill solid; set yrange [0:]; set boxwidth 1; plot '-' using 2:1 with boxes title 'vocabulary'"
 ```
-![alice word length distribution](images/alice-wlen-freq.png)
+![alice word length distribution](docs/images/alice-wlen-freq.png)
 
 
 
@@ -293,11 +293,11 @@ The result is further redirected to create a histogram of inter-token distance f
 ```
 $ WORD='time'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}' | sort -n | gnuplot -p -e "numbins='25'; maxvalue='2000'; minvalue='1'; lbllegend='$WORD'; lblxlabel='intre-token distance'; lblylabel='counts'; outputfilename='$WORD-intertokenhist.png'" histogram.gp; display $WORD-intertokenhist.png
 ```
-![inter-token histogram for the word "time"](images/time-intertokenhist.png)
+![inter-token histogram for the word "time"](docs/images/time-intertokenhist.png)
 ```
 $ WORD='the'; ./wordposition.sh -i data/alice.txt -w $WORD | awk 'NR>1{print $1-p} {p=$1}' | sort -n | gnuplot -p -e "numbins='25'; maxvalue='200'; minvalue='1'; lbllegend='$WORD'; lblxlabel='intre-token distance'; lblylabel='counts'; outputfilename='$WORD-intertokenhist.png'" histogram.gp; display $WORD-intertokenhist.png
 ```
-![inter-token histogram for the word "the"](images/the-intertokenhist.png)
+![inter-token histogram for the word "the"](docs/images/the-intertokenhist.png)
 
 
 
@@ -319,10 +319,10 @@ $ ./wordchart.sh -i alice.txt -w Alice -o alice-alice.tex; pdflatex alice-alice.
 
 $ ./wordchart.sh -i alice.txt -w When -o alice-when.tex -c; pdflatex alice-when.tex; convert -flatten -density 150 alice-when.pdf -quality 90 alice-when.png; evince alice-when.pdf & 
 ```
-![alice wordchart for the word "Queen"](images/alice-queen.png)
-![alice wordchart for the word "Alice"](images/alice-alice.png)
-![alice wordchart for the word "When"](images/alice-When.png)
-![alice wordchart for the word "when"](images/alice-when.png)
+![alice wordchart for the word "Queen"](docs/images/alice-queen.png)
+![alice wordchart for the word "Alice"](docs/images/alice-alice.png)
+![alice wordchart for the word "When"](docs/images/alice-When.png)
+![alice wordchart for the word "when"](docs/images/alice-when.png)
 
 
 
@@ -367,7 +367,7 @@ $ ./simons.py -i alice.txt --newratioevo | head -n 100 | tail -n 10
 $ FILENAME='alice.txt'; MOVAVGORDER=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}'); cat $FILENAME | ./simons.py | ./movavg.awk -v P=$MOVAVGORDER | gnuplot -e "set terminal png; set output 'newworddensity.png'; set xlabel 'text length'; set ylabel 'new word density'; set xrange[0:$WTOTAL]; set title 'new word density in file $FILENAME using a mov avg of order $MOVAVGORDER'; set key right top; plot '/dev/stdin' with lines title 'alice'"; display newworddensity.png 
 ```
 
-![new word density in alice](images/newworddensity.png)
+![new word density in alice](docs/images/newworddensity.png)
 
 
 
@@ -383,7 +383,7 @@ Sliding window new word density (uses half window overlap).
 $ FILENAME='alice.txt'; WLEN=500; WTOTAL=$(wc -w "$FILENAME" | awk '{print $1}'); MAXLEN=$((WTOTAL - WLEN)); XMAX=$(echo 2*$MAXLEN/$WLEN-1 | bc); ./swnwdensity.sh $FILENAME $WLEN | gnuplot -e "set terminal png; set output 'swnewworddensity.png'; set xlabel 'text length'; set ylabel 'new word density'; set xrange[0:$XMAX]; set title 'sliding window new word density in file $FILENAME using window of length $WLEN'; set key right top; plot '/dev/stdin' with lines title 'alice'"; display swnewworddensity.png 
 ```
 
-![sliding window new word density in alice](images/swnewworddensity.png)
+![sliding window new word density in alice](docs/images/swnewworddensity.png)
 
 
 ## windowentropy.sh <a name="windowentropy"></a>
@@ -401,25 +401,25 @@ This script uses [windowindex.py] (#windowindex) (define window boundaries), [ge
 
 ### usage examples
 ```
-$ ./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle | gnuplot -e "set terminal png; set output 'images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display images/windowentropy-alice.png
+$ ./windowentropy.sh -i alice.txt -n 64 -s linear -c cumulative -t word -m mle | gnuplot -e "set terminal png; set output 'docs/images/windowentropy-alice.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display docs/images/windowentropy-alice.png
 ```
 
-![window entropy in alice](images/windowentropy-alice.png)
+![window entropy in alice](docs/images/windowentropy-alice.png)
 
 
 ```
 ./windowentropy.sh -i alice.txt -n 128 -s linear -c sliding -t word | gnuplot -e "set terminal png; set output 'windowentropy-alice-slidingwindow.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice (sliding window)'; set key right bottom; plot '-' using 2:3 with lines title 'alice'" && display windowentropy-alice-slidingwindow.png
 ```
-![window entropy in alice](images/windowentropy-alice-slidingwindow.png)
+![window entropy in alice](docs/images/windowentropy-alice-slidingwindow.png)
 
 
 ```
 $ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mle > /tmp/mle
 $ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m mm > /tmp/mm
 $ ./windowentropy.sh -i data/alice.txt -n 64 -s linear -c cumulative -t word -m jackknife > /tmp/jackknife
-$ paste /tmp/mle /tmp/mm /tmp/jackknife | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set datafile separator whitespace; set terminal png; set output 'images/windowentropy-alice-compared.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'mle', '-' using 2:6 with lines title 'mm', '-' using 2:9 with lines title 'jackknife'" && display images/windowentropy-alice-compared.png
+$ paste /tmp/mle /tmp/mm /tmp/jackknife | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/stdout /dev/stdout | gnuplot -e "set datafile separator whitespace; set terminal png; set output 'docs/images/windowentropy-alice-compared.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice'; set key right bottom; plot '-' using 2:3 with lines title 'mle', '-' using 2:6 with lines title 'mm', '-' using 2:9 with lines title 'jackknife'" && display docs/images/windowentropy-alice-compared.png
 ```
-![window entropy in alice](images/windowentropy-alice-compared.png)
+![window entropy in alice](docs/images/windowentropy-alice-compared.png)
 
 
 Bellow is presented an example comparing the entropy evolution with the text length in the original text and a shuffled version of the text.
@@ -432,7 +432,7 @@ $ paste alice_h alice_hs | awk -- '{print $0} END{print "e"}' | tee -i -a /dev/s
 gnuplot -e "set terminal png; set output 'windowentropy-alice-shuffled.png'; set xlabel 'text length'; set ylabel 'H (bits)'; set title 'Entropy evolution in Alice using mle entropy'; set key right bottom; plot '-' using 2:3 with lines title 'alice', '-' using 5:6 with lines title 'shuffled alice'"
 $ display windowentropy-alice-shuffled.png
 ```
-![window entropy in alice vs shuffled](images/windowentropy-alice-shuffled.png)
+![window entropy in alice vs shuffled](docs/images/windowentropy-alice-shuffled.png)
 
 
 ## windowindex.py <a name="windowindex"></a>
@@ -520,7 +520,7 @@ $ cat *.txt | ./wordcounttfl.sh -w > vocabulary
 $ head -n 2000 vocabulary > vocabularytop2000
 $ python cosineexamplefederalist.py 
 ```
-![the federalist papers](images/federalistpapers.png)
+![the federalist papers](docs/images/federalistpapers.png)
 
 
 
