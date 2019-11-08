@@ -62,4 +62,4 @@ $ ./wordcounttfl.sh -c -i ulysses.txt -o ulysses.cnt && ./entropy.py -i ulysses.
 ~~~
 
 
-
+[back](./)
