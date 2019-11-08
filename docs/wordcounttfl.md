@@ -64,3 +64,4 @@ You may also get the frequency counts for multiple files in parallel using GNU P
 $ ls *.txt | parallel 'cat {} | ./wordcounttfl.sh > {.}.flt'
 ~~~ 
 
+[back](./)
