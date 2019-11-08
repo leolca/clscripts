@@ -5,6 +5,10 @@ import os
 import re
 import argparse
 
+# Simon model is a class of stochastic model that models the dynamics of the system 
+# based on the constant growth via addition of new elements.
+# Simon, H. A., 1955, Biometrika 42, 425
+#
 # usage example
 # cat casa.txt | ./simons.py | sort | uniq -c | awk -F" " '{print $1}' | awk '{s+=$1} END {print $1/s}'
 
