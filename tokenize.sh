@@ -5,9 +5,10 @@ display_help() {
     echo "Usage: $0 [option...] " >&2
     echo
     echo "   -h                 Display this help message"
-    echo "   -s			Specify the token separator in output (new line is the default)"
+    echo "   -s			Specify the token separator in output (blank space is the default)"
     echo "   -n		        Do not break on hyphens"
     echo "   -a		  	Do not break on apostrophes"
+    echo "   -l			One sentence per line"
     echo "   -o			Specify output file name"
     echo "   -i			Specify input file name"
     echo
@@ -15,13 +16,14 @@ display_help() {
 }
 
 
-SEP="\n"
+SEP=" "
 INPUTFILE="/dev/stdin"
 OUTPUTFILE="/dev/stdout"
 NOHYPHEN=0
 NOAPOS=0
+ONESPL=0
 # As long as there is at least one more argument, keep looping
-while getopts "hnas:o:i:" OPTION
+while getopts "hnals:o:i:" OPTION
 do
     case $OPTION in
         s)
@@ -32,6 +34,9 @@ do
 	;;
 	a)
 	NOAPOS=1
+	;;
+	l)
+	ONESPL=1
 	;;
         o)
         OUTPUTFILE="$OPTARG"
@@ -59,16 +64,20 @@ if [ ! -z "$OUTPUTFILE" ]; then
   fi
 fi 
 
-echo $NOHYPHEN
-echo $NOAPOS
-if [[ "$NOHYPHEN" == 1 ]] && [[ "$NOAPOS" == 1 ]]; then
-  cmd="awk '{gsub(/[^[:alpha:][:blank:]\'\''-]/,\" \"); print tolower(\$0)}'"
-elif [[ "$NOHYPHEN" == 1 ]]; then
-  cmd="awk '{gsub(/[^[:alpha:][:blank:]-]/,\" \"); print tolower(\$0)}'"
-elif [[ "$NOAPOS" == 1 ]]; then
-  cmd="awk '{gsub(/[^[:alpha:][:blank:]\'\'']/,\" \"); print tolower(\$0)}'"
+if [[ "$ONESPL" == 1 ]]; then
+  cmd1="awk '{gsub(/[!\.?]\s*/,\"\n\"); print \$0}'"
 else
-  cmd="awk '{gsub(/[^[:alpha:][:blank:]]/,\" \"); print tolower(\$0)}'"
+  cmd1=""
 fi
 
-(eval $cmd | tr -d '\r' | tr ' ' '\n' | tr -s ' \n' | tr '\n' "$SEP") < "$INPUTFILE" > "$OUTPUTFILE"
+if [[ "$NOHYPHEN" == 1 ]] && [[ "$NOAPOS" == 1 ]]; then
+  cmd2="awk '{gsub(/[^[:alpha:]\'\''-]/,\""$SEP"\"); print tolower(\$0)}'"
+elif [[ "$NOHYPHEN" == 1 ]]; then
+  cmd2="awk '{gsub(/[^[:alpha:]-]/,\""$SEP"\"); print tolower(\$0)}'"
+elif [[ "$NOAPOS" == 1 ]]; then
+  cmd2="awk '{gsub(/[^[:alpha:]\'\'']/,\""$SEP"\"); print tolower(\$0)}'"
+else
+  cmd2="awk '{gsub(/[^[:alpha:]]/,\""$SEP"\"); print tolower(\$0)}'"
+fi
+
+(tr -d '\r' | eval $cmd1 | eval $cmd2 | tr -s ' \n') < "$INPUTFILE" > "$OUTPUTFILE"
