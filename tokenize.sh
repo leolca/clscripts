@@ -4,49 +4,46 @@
 display_help() {
     echo "Usage: $0 [option...] " >&2
     echo
-    echo "   -h, --help                 Display this help message"
-    echo "   -s, --separator		Specify the token separator in output (new line is the default)"
-    echo "   -o, --output-file          Specify output file name"
-    echo "   -i, --input-file           Specify input file name"
+    echo "   -h                 Display this help message"
+    echo "   -s			Specify the token separator in output (new line is the default)"
+    echo "   -n		        Do not break on hyphens"
+    echo "   -a		  	Do not break on apostrophes"
+    echo "   -o			Specify output file name"
+    echo "   -i			Specify input file name"
     echo
-    # echo some stuff here for the -a or --add-options 
     exit 1
 }
 
 
 SEP="\n"
+INPUTFILE="/dev/stdin"
+OUTPUTFILE="/dev/stdout"
+NOHYPHEN=0
+NOAPOS=0
 # As long as there is at least one more argument, keep looping
-while [[ $# -gt 0 ]]; do
-    key="$1"
-    case "$key" in
-        # This is a flag type option. Will catch either -c or --counts
-        -s|--separator)
-	shift
-        SEP="$1"
+while getopts "hnas:o:i:" OPTION
+do
+    case $OPTION in
+        s)
+        SEP="$OPTARG"
         ;;
-        # This is an arg value type option. Will catch -o value or --output-file value
-        -o|--output-file)
-        shift # past the key and to the value
-        OUTPUTFILE="$1"
+	n)
+	NOHYPHEN=1
+	;;
+	a)
+	NOAPOS=1
+	;;
+        o)
+        OUTPUTFILE="$OPTARG"
         ;;
-        # This is an arg value type option. Will catch -i value or --input-file value
-        -i|--input-file)
-        shift # past the key and to the value
-        INPUTFILE="$1"
+        i)
+        INPUTFILE="$OPTARG"
         ;;
-	# display help
-	-h | --help)
+	h)
         display_help  # Call your function
         exit 0
         ;;
-        *)
-        # Do whatever you want with extra options
-        #echo "Unknown option '$key'"
-	INPUTFILE="$1"
-        ;;
     esac
-    # Shift after checking all the cases to get the next option
-    shift
 done
 
 if [ ! -z "$OUTPUTFILE" ]; then
@@ -62,16 +59,16 @@ if [ ! -z "$OUTPUTFILE" ]; then
   fi
 fi 
 
-if [ -z "$OUTPUTFILE" ]; then
-  if [ "$INPUTFILE" ]; then 
-     cat "$INPUTFILE"
-  else 
-     cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/," "); print tolower($0)}' | tr -d '\r' | tr ' ' '\n' | tr -s ' \n' | tr '\n' "$SEP"
+echo $NOHYPHEN
+echo $NOAPOS
+if [[ "$NOHYPHEN" == 1 ]] && [[ "$NOAPOS" == 1 ]]; then
+  cmd="awk '{gsub(/[^[:alpha:][:blank:]\'\''-]/,\" \"); print tolower(\$0)}'"
+elif [[ "$NOHYPHEN" == 1 ]]; then
+  cmd="awk '{gsub(/[^[:alpha:][:blank:]-]/,\" \"); print tolower(\$0)}'"
+elif [[ "$NOAPOS" == 1 ]]; then
+  cmd="awk '{gsub(/[^[:alpha:][:blank:]\'\'']/,\" \"); print tolower(\$0)}'"
 else
-  if [ "$INPUTFILE" ]; then
-     cat "$INPUTFILE"
-  else
-     cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/," "); print tolower($0)}' | tr -d '\r' | tr ' ' '\n' | tr -s ' \n' | tr '\n' "$SEP" >> $OUTPUTFILE
+  cmd="awk '{gsub(/[^[:alpha:][:blank:]]/,\" \"); print tolower(\$0)}'"
 fi
+
+(eval $cmd | tr -d '\r' | tr ' ' '\n' | tr -s ' \n' | tr '\n' "$SEP") < "$INPUTFILE" > "$OUTPUTFILE"
