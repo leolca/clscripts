@@ -71,13 +71,13 @@ else
 fi
 
 if [[ "$NOHYPHEN" == 1 ]] && [[ "$NOAPOS" == 1 ]]; then
-  cmd2="awk '{gsub(/[^[:alpha:]\'\''-]/,\""$SEP"\"); print tolower(\$0)}'"
+  cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]\'\''-]/,\""$SEP"\"); print \$0}'"
 elif [[ "$NOHYPHEN" == 1 ]]; then
-  cmd2="awk '{gsub(/[^[:alpha:]-]/,\""$SEP"\"); print tolower(\$0)}'"
+  cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]-]/,\""$SEP"\"); print \$0}'"
 elif [[ "$NOAPOS" == 1 ]]; then
-  cmd2="awk '{gsub(/[^[:alpha:]\'\'']/,\""$SEP"\"); print tolower(\$0)}'"
+  cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]\'\'']/,\""$SEP"\"); print \$0}'"
 else
-  cmd2="awk '{gsub(/[^[:alpha:]]/,\""$SEP"\"); print tolower(\$0)}'"
+  cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]]/,\""$SEP"\"); print \$0}'"
 fi
 
-(tr -d '\r' | eval $cmd1 | eval $cmd2 | tr -s ' \n') < "$INPUTFILE" > "$OUTPUTFILE"
+(tr -d '\r' | eval $cmd1 | eval $cmd2) < "$INPUTFILE" > "$OUTPUTFILE"
