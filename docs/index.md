@@ -41,5 +41,6 @@ written in different languages (bash, python, octave, R, C, etc).
 <small>word frequency</small>
 17. [ngram](./ngram.html)<br/>
 <small>compute ngrams of chars or word</small>
-
+18. [tokenize.sh](./tokenize.html)<br/>
+<small>tokenizer</small>
 
