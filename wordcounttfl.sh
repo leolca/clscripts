@@ -86,11 +86,11 @@ if [ -z "$OUTPUTFILE" ]; then
      cat "$INPUTFILE"
   else 
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
+  fi | ./tokenize.sh | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
 else
   if [ "$INPUTFILE" ]; then
      cat "$INPUTFILE"
   else
      cat
-  fi | awk '{gsub(/[^[:alpha:][:blank:]]/,""); print tolower($0)}' | tr -d '\r' | tr -s ' \n' | tr ' ' '\n' | awk 'NF' | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
+  fi | ./tokenize.sh | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
 fi

@@ -80,4 +80,4 @@ else
   cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]]/,\""$SEP"\"); print \$0}'"
 fi
 
-(tr -d '\r' | eval $cmd1 | eval $cmd2) < "$INPUTFILE" > "$OUTPUTFILE"
+(tr -d '\r' | sed '/^$/d' | awk '{$1=$1};1' | eval $cmd1 | eval $cmd2 | tr -s "$SEP" | sed "s/$SEP\$//" | sed '/^$/d') < "$INPUTFILE" > "$OUTPUTFILE"
