@@ -67,7 +67,7 @@ fi
 if [[ "$ONESPL" == 1 ]]; then
   cmd1="awk '{gsub(/[!\.?]\s*/,\"\n\"); print \$0}'"
 else
-  cmd1=""
+  cmd1="cat"
 fi
 
 if [[ "$NOHYPHEN" == 1 ]] && [[ "$NOAPOS" == 1 ]]; then
@@ -80,4 +80,4 @@ else
   cmd2="awk '{gsub(/-{2,}/,\"\"); print \$0}' | tr -s '\n ' | awk '{gsub(/[^[:alpha:]]/,\""$SEP"\"); print \$0}'"
 fi
 
-(tr -d '\r' | sed '/^$/d' | awk '{$1=$1};1' | eval $cmd1 | eval $cmd2 | tr -s "$SEP" | sed "s/$SEP\$//" | sed '/^$/d') < "$INPUTFILE" > "$OUTPUTFILE"
+(tr -d '\r' | sed '/^$/d' | awk '{$1=$1};1' | eval $cmd1 | eval $cmd2 | tr -s "$SEP" | sed "s/$SEP\+\$//" | sed "s/^$SEP\+//" | sed '/^$/d') < "$INPUTFILE" > "$OUTPUTFILE"

@@ -82,15 +82,15 @@ else
 fi
 
 if [ -z "$OUTPUTFILE" ]; then
-  if [ "$INPUTFILE" ]; then 
-     cat "$INPUTFILE"
-  else 
-     cat
-  fi | ./tokenize.sh | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
-else
-  if [ "$INPUTFILE" ]; then
-     cat "$INPUTFILE"
+  if [ -z "$INPUTFILE" ]; then 
+     cat 
   else
-     cat
-  fi | ./tokenize.sh | sort | uniq -c | sort -n -r | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
+     cat "$INPUTFILE"
+  fi | ./tokenize.sh | awk '{print tolower($0)}' | tr " " "\n" | sort | uniq -c | sort -k1,1nr -k2 | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
+else
+  if [ -z "$INPUTFILE" ]; then
+     cat 
+  else
+     cat "$INPUTFILE"
+  fi | ./tokenize.sh | awk '{print tolower($0)}' | tr " " "\n" | sort | uniq -c | sort -k1,1nr -k2 | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
 fi
