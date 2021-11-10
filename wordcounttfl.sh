@@ -63,34 +63,20 @@ if [ ! -z "$OUTPUTFILE" ]; then
        exit
      fi
   fi
-fi 
+fi
 
 if [ -z "$COUNTSONLY" ] && [ -z "$WORDSONLY" ] ; then
-   if [ -z "$OUTPUTFILE" ]; then
-      echo -e "f\ttype" 
-   else
-      echo -e "f\ttype" > $OUTPUTFILE
-   fi
+   echo -e "f\ttype" > "${OUTPUTFILE:-/dev/stdout}"
 fi
 
-if [ "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]; then
-   SEDSTR="\1"
-elif [ ! "$COUNTSONLY" ] &&  [ "$WORDSONLY" ]; then
-   SEDSTR="\2"
-else
-   SEDSTR="\1\t\2"
-fi
+cat < "${INPUTFILE:-/dev/stdin}" | 
+    ./tokenize.sh | 
+    awk '{print tolower($0)}' | 
+    tr " " "\n" | 
+    sort | 
+    uniq -c | 
+    sort -k1,1nr -k2 | 
+    ( ([ "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk '{print $1}' || cat ) | 
+    ( ([ ! "$COUNTSONLY" ] && [ "$WORDSONLY" ]) && awk '{print $2}' || cat ) |
+    ( ([ ! "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk -OFS='\t' '{print $1,$2}' || cat ) >> "${OUTPUTFILE:-/dev/stdout}" 
 
-if [ -z "$OUTPUTFILE" ]; then
-  if [ -z "$INPUTFILE" ]; then 
-     cat 
-  else
-     cat "$INPUTFILE"
-  fi | ./tokenize.sh | awk '{print tolower($0)}' | tr " " "\n" | sort | uniq -c | sort -k1,1nr -k2 | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/"
-else
-  if [ -z "$INPUTFILE" ]; then
-     cat 
-  else
-     cat "$INPUTFILE"
-  fi | ./tokenize.sh | awk '{print tolower($0)}' | tr " " "\n" | sort | uniq -c | sort -k1,1nr -k2 | sed "s/[[:space:]]*\([0-9]*\) \([a-z']*\)/$SEDSTR/" >> $OUTPUTFILE
-fi
