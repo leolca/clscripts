@@ -78,5 +78,5 @@ cat < "${INPUTFILE:-/dev/stdin}" |
     sort -k1,1nr -k2 | 
     ( ([ "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk '{print $1}' || cat ) | 
     ( ([ ! "$COUNTSONLY" ] && [ "$WORDSONLY" ]) && awk '{print $2}' || cat ) |
-    ( ([ ! "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk -OFS='\t' '{gsub(/^[ \t]+/,"",$1); print NR, $1, $2}' | tr -s ' ' '\t' || cat ) >> "${OUTPUTFILE:-/dev/stdout}" 
+    ( ([ ! "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk -OFS='\t' '{gsub(/^[ \t]+/,"",$1); gsub(/[ \t]+$/,"",$2); print NR, $1, $2}' | tr -s ' ' '\t' | sed 's/[ \t]*$//' || cat ) >> "${OUTPUTFILE:-/dev/stdout}" 
 
