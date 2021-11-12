@@ -66,11 +66,11 @@ if [ ! -z "$OUTPUTFILE" ]; then
 fi
 
 if [ -z "$COUNTSONLY" ] && [ -z "$WORDSONLY" ] ; then
-   echo -e "f\ttype" > "${OUTPUTFILE:-/dev/stdout}"
+   echo -e "k\tf\ttype" > "${OUTPUTFILE:-/dev/stdout}"
 fi
 
 cat < "${INPUTFILE:-/dev/stdin}" | 
-    ./tokenize.sh | 
+    tokenize.sh | 
     awk '{print tolower($0)}' | 
     tr " " "\n" | 
     sort | 
@@ -78,5 +78,5 @@ cat < "${INPUTFILE:-/dev/stdin}" |
     sort -k1,1nr -k2 | 
     ( ([ "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk '{print $1}' || cat ) | 
     ( ([ ! "$COUNTSONLY" ] && [ "$WORDSONLY" ]) && awk '{print $2}' || cat ) |
-    ( ([ ! "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk -OFS='\t' '{print $1,$2}' || cat ) >> "${OUTPUTFILE:-/dev/stdout}" 
+    ( ([ ! "$COUNTSONLY" ] && [ ! "$WORDSONLY" ]) && awk -OFS='\t' '{gsub(/^[ \t]+/,"",$1); print NR, $1, $2}' | tr -s ' ' '\t' || cat ) >> "${OUTPUTFILE:-/dev/stdout}" 
 
